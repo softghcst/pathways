@@ -379,7 +379,7 @@ const VIEWS = {
     const comps = dance.competitions(p);
     const place = (n) => (n === 1 ? '1st' : n === 2 ? '2nd' : n === 3 ? '3rd' : `${n}th`);
     return `<div class="card"><h3>Dance</h3>${kv([['Your dancing', String(p.talents.dance)], ['Training', training], ['Jobs on your record', String(dance.record(p))], ['Agent', ent.workOf(p).agent ? 'Yes' : 'None']])}
-      <p class="muted">Gigs are booked one at a time. Read the brief: clients hint at the style they want. The big ones (tours, ${esc(DANCE_SHOW.name)}) go through agents, and to dancers with jobs behind them. Dance ensemble parts in musicals are on the Opportunities page.</p></div>
+      <p class="muted">Gigs are booked one at a time. Read the brief: clients hint at the style they want. The big ones (tours, ${esc(DANCE_SHOW.name)}) go through agents, and to dancers with jobs behind them. Dance ensemble parts in musicals, and musicals looking for a choreographer, are on the Opportunities page. A qualified dancer can open a studio of their own, from Business.</p></div>
       ${list.length ? `<div class="section-label">Auditions this year (${Math.max(0, left)} you can still go to)</div>${list.map((o) => {
         const g = DANCE_GIGS[o.kind];
         const why = dance.whyNot(o.kind, p);

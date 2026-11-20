@@ -17,6 +17,7 @@
  *   after     the number of dance jobs on a dancer's record before they are considered
  *   away      it takes the dancer away from home for its length
  *   show      the televised dance competition (DANCE_SHOW): the dancer partners a celebrity for a season
+ *   only      offered only in these countries; kpop: for one of the country's idol groups (engine/kpop.js)
  */
 export const DANCE_GIGS = {
   commercial: { name: 'Commercial', minAge: 6, bar: 45, fee: 3500, weeks: 1, hours: 0, prestige: 8, audience: 'public', brand: true },
@@ -27,6 +28,8 @@ export const DANCE_GIGS = {
   revue: { name: 'Resort revue', minAge: 18, bar: 66, fee: 48000, weeks: 44, hours: 36, prestige: 15 },
   tour: { name: 'Backup dancer on tour', minAge: 18, bar: 72, fee: 40000, weeks: 18, hours: 40, prestige: 30, audience: 'music', star: true, agent: true, away: true },
   choreo: { name: 'Choreograph a music video', minAge: 20, bar: 76, fee: 14000, weeks: 3, hours: 0, prestige: 25, audience: 'music', star: true, after: 4 },
+  idol_backup: { name: 'Backup dancer for an idol group', minAge: 16, bar: 68, fee: 18000, weeks: 12, hours: 30, prestige: 20, audience: 'music', only: ['kr'], kpop: true },
+  idol_choreo: { name: 'Choreograph an idol comeback', minAge: 20, bar: 80, fee: 32000, weeks: 4, hours: 20, prestige: 35, audience: 'music', only: ['kr'], kpop: true, after: 4 },
   tv_pro: { name: 'Pro on Prancing with the Stars', minAge: 20, bar: 82, fee: 85000, weeks: 12, hours: 40, prestige: 55, audience: 'tv', agent: true, after: 3, show: true },
 };
 
@@ -54,6 +57,7 @@ export const DANCE_STYLES = {
 export const DANCE_WANTS = {
   commercial: ['jazz', 'hiphop', 'contemporary'], video: ['hiphop', 'jazz', 'contemporary'], theme_park: ['jazz', 'ballet'], squad: ['jazz', 'hiphop'],
   cruise: ['jazz', 'ballroom'], revue: ['jazz', 'ballroom', 'ballet'], tour: ['hiphop', 'jazz'], choreo: ['hiphop', 'contemporary', 'jazz'], tv_pro: ['ballroom'],
+  idol_backup: ['hiphop', 'jazz'], idol_choreo: ['hiphop', 'contemporary'],
 };
 export const DANCE_BRIEFS = {
   hiphop: ['"We want it to hit. Grit, not polish."', '"Street. Real. Nobody should look like they took a class."'],
@@ -89,3 +93,14 @@ export const DANCE_COMPETITIONS = {
   world: { name: 'World dance championships', bar: { kid: 68, adult: 80 }, field: 18, fee: 900, prize: { kid: 5000, adult: 25000 }, fame: 6, after: 'national' },
 };
 export const COMPETITIONS_A_YEAR = 2;
+/** Idol groups to name before the K-pop world has made its own (engine/kpop.js keeps the real ones). */
+export const IDOL_GROUPS = ['NOVA9', 'Lumi.X', 'STARVEIL', 'Ever&After', 'BLAZE CODE', 'Moonwave'];
+
+/**
+ * A dancer qualified to teach and to open a studio (data/business.js 'dance_studio'): a dance degree, three years in
+ * a dance company, or ten paid dance jobs; and dancing at this standard.
+ */
+export const STUDIO_READY = { skill: 60, years: 3, jobs: 10 };
+
+/** Choreographing a musical: the dance it takes, and the choreography already on the record, by tier. */
+export const CHOREOGRAPHER = { skill: 75, record: { community: 0, regional: 1, touring: 2, major_stage: 3 }, hours: 0.5, call: 0.5 };

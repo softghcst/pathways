@@ -497,6 +497,9 @@ function freshTitle(a, long) {
 }
 
 /** Records and puts out a release from the best songs the player has. It comes out at the turn of the year. */
+/** A music video its artist dances in: the dance it takes, what it does for sales (a plain video: 1.25). */
+export const MUSIC_VIDEO_DANCE = { skill: 65, sales: 1.4 };
+
 export function record(type, o = {}) {
   const p = player();
   const f = musicOf(p);
@@ -514,10 +517,12 @@ export function record(type, o = {}) {
   const songs = f.songs.sort((x, y) => y.q - x.q).splice(0, t.songs);
   const quality = Math.round(songs.reduce((s, x) => s + x.q, 0) / songs.length * 0.55 + actPerf(a) * 0.3 + genreFit(a) * 0.15);
   const r = { id: nextId('rel'), title: freshTitle(a, type !== 'single'), actId: a.id, type, songs: t.songs, quality,
-    made: year(), released: null, labelId: label?.id ?? null, units: {}, critics: null, chart: null, revenue: [], paid: [], first: !a.releases.length, share: 1 / Math.max(1, members(a).length), video };
+    made: year(), released: null, labelId: label?.id ?? null, units: {}, critics: null, chart: null, revenue: [], paid: [], first: !a.releases.length, share: 1 / Math.max(1, members(a).length), video,
+    // A musician who can really dance carries the video themselves, to their own choreography (MUSIC_VIDEO_DANCE).
+    danced: video && p.talents.dance >= MUSIC_VIDEO_DANCE.skill };
   M().releases[r.id] = r;
   a.releases.push(r.id);
-  return result(true, `You record ${r.title}${video ? ', and shoot a video for it' : ''}. ${label ? `${label.name} will put it out.` : 'You put it out yourself.'} It comes out at the turn of the year.`);
+  return result(true, `You record ${r.title}${video ? `, and shoot a video for it${r.danced ? ': you choreograph it yourself, and dance it in one take' : ''}` : ''}. ${label ? `${label.name} will put it out.` : 'You put it out yourself.'} It comes out at the turn of the year.`);
 }
 
 const SONGWRITER_SHARE = 0.08;
@@ -757,7 +762,7 @@ function releaseNow(r) {
   const g = genreOf(a.genre);
   // Majors take records abroad; a genre's own heartlands come first.
   const reach = label?.tier === 'major' ? [...new Set([...g.strong.filter((c) => COUNTRIES[c] && c !== a.countryId), ...Object.keys(COUNTRIES).filter((c) => c !== a.countryId).sort(() => rng.next() - 0.5)])].slice(0, rng.int(2, 8)) : [];
-  const home = Math.round((fans * (0.2 + r.quality / 200) + Math.max(0, r.quality - 35) ** 2 * 2.5 * push) * typeK * (r.video ? 1.25 : 1) * popularIn(g.id, a.countryId) * rng.around(1, 0.3)); // a video reaches people radio does not
+  const home = Math.round((fans * (0.2 + r.quality / 200) + Math.max(0, r.quality - 35) ** 2 * 2.5 * push) * typeK * (r.video ? (r.danced ? MUSIC_VIDEO_DANCE.sales : 1.25) : 1) * popularIn(g.id, a.countryId) * rng.around(1, 0.3)); // a video reaches people radio does not
   r.units = { [a.countryId]: home };
   for (const c of reach) r.units[c] = Math.round(home * (0.05 + rng.next() * 0.2) * (r.quality / 80) * popularIn(g.id, c) / popularIn(g.id, a.countryId));
   for (const [c, n] of Object.entries(r.units)) a.fans[c] = Math.round((a.fans[c] ?? 0) + n * 0.35);
@@ -848,7 +853,7 @@ export function tickMusic() {
     const mine = musicOf(p).acts.includes(a.id) && a.members.some((m) => m.who === 'player' && m.from <= r.made);
     if (mine) {
       const units = Object.values(r.units).reduce((s, n) => s + n, 0);
-      if (r.video) gain({ audience: exists('digital') ? 'digital' : 'tv', amount: Math.min(8, Math.sqrt(units) / 25), reach: 0.3, lasting: 0.1, why: `the video for ${r.title}` }, p);
+      if (r.video) gain({ audience: exists('digital') ? 'digital' : 'tv', amount: Math.min(r.danced ? 11 : 8, Math.sqrt(units) / 25 * (r.danced ? 1.3 : 1)), reach: 0.3, lasting: 0.1, why: `the video for ${r.title}` }, p);
       gain({ audience: 'music', amount: Math.min(25, Math.sqrt(units) / 8) * (0.5 + r.critics / 100), abroad: Object.keys(r.units).filter((c) => c !== a.countryId), reach: 0.4, lasting: 0.25, why: r.title }, p);
       regard({ credibility: (r.critics - 60) / 10, why: r.title }, p);
       article({ kind: 'review', about: 'player', accuracy: 'verified', text: `${a.name}, ${r.title}: ${r.critics >= 75 ? 'a record that will last' : r.critics >= 55 ? 'well worth a listen' : r.critics >= 40 ? 'patchy' : 'a misstep'}.` });

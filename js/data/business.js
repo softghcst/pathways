@@ -12,6 +12,7 @@
 //   solo      can be run with no staff at all
 //   needs.land  the owner must have land of their own (a country house or larger)
 //   needs.flag  a player flag the owner must have, with needs.flagText saying why
+//   needs.dancer  the owner must be a qualified dancer (engine/dance.js studioReady: data/dance.js STUDIO_READY)
 const B = (id, name, family, startup, perHead, cogs, rent, wage, track, needs = {}, o = {}) => ({ id, name, family, startup, perHead, cogs, rent, wage, track, needs, ...o });
 
 export const BUSINESS_TYPES = [
@@ -40,6 +41,8 @@ export const BUSINESS_TYPES = [
   B('dental_practice', 'Dental practice', 'health', 160000, 140000, 0.16, 32000, 50000, 'dentist', { program: 'dental' }),
   B('vet_practice', 'Veterinary practice', 'land', 130000, 115000, 0.2, 30000, 44000, 'vet', { program: 'veterinary' }),
   B('gym', 'Fitness studio', 'sport', 70000, 60000, 0.08, 34000, 28000, 'fitness'),
+  // Classes for children and adults, a competition team, a recital every summer. Its teachers come from the dance world.
+  B('dance_studio', 'Dance studio', 'arts', 35000, 54000, 0.06, 24000, 30000, 'dance', { dancer: true }, { solo: true }),
   B('tutoring', 'Tutoring center', 'education', 18000, 56000, 0.05, 12000, 34000, 'research_asst', { degree: 'university' }, { solo: true }),
   B('photo_studio', 'Photography studio', 'media', 24000, 60000, 0.1, 12000, 30000, 'photography', {}, { solo: true }),
   B('events_co', 'Events company', 'hospitality', 25000, 72000, 0.3, 8000, 34000, 'events', { experience: { events: 3, hotel: 4, front_house: 4 } }, { solo: true }),

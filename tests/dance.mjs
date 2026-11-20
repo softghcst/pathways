@@ -13,6 +13,10 @@ import * as dance from '../js/engine/dance.js';
 import * as ent from '../js/engine/entertainment.js';
 import * as work from '../js/engine/worklife.js';
 import { admissionChance } from '../js/engine/education.js';
+import { startBlock, start as startBusiness } from '../js/engine/business.js';
+import { BUSINESS_BY_ID } from '../js/data/business.js';
+import { CHOREOGRAPHER, STUDIO_READY } from '../js/data/dance.js';
+import * as music from '../js/engine/music.js';
 
 rng.seed(808);
 const problems = [];
@@ -187,6 +191,86 @@ const offerOf = (kind, p) => {
   check((p.finance.lifetimeEarned ?? 0) > earned0, 'and is paid for it');
   check(Number.isFinite(p.finance.cash), 'money stays a number');
   section(`a dancer's life, 18 to 32: ${d.gigs.length} jobs (${[...new Set(d.gigs.map((x) => x.kind))].join(', ')}), ${d.comps.length} competitions, best national place ${d.best.national ?? 'none'}`);
+}
+
+// 9. A dance studio: a qualified dancer can open one; it runs as a business.
+{
+  const studio = BUSINESS_BY_ID.dance_studio;
+  check(/dance degree/.test(startBlock(studio)) || true, 'checked below');
+  dancer(30, 80);
+  check(/dance degree/.test(startBlock(studio)), `an untrained dancer with no record cannot open a studio: ${startBlock(studio)}`);
+  const p = dancer(30, 80, { degree: 'dance_bfa' }); p.finance.cash = 200000;
+  check(!/dance degree/.test(startBlock(studio)), `a dancer with a BFA can: ${startBlock(studio)}`);
+  dancer(30, 80, { record: STUDIO_READY.jobs });
+  check(!/dance degree/.test(startBlock(studio)), 'so can a dancer with ten jobs behind them');
+  dancer(30, 50, { degree: 'dance_bfa' });
+  check(/dance degree|dance well/.test(startBlock(studio)), 'not one who no longer dances well');
+  const q = dancer(32, 82, { degree: 'dance_bfa' }); q.finance.cash = 300000;
+  const r = startBusiness('dance_studio', 'Pointe & Shoot Dance Academy', { solo: true });
+  check(r.ok && (q.businesses ?? []).some((b) => b.typeId === 'dance_studio' || b.type === 'dance_studio'), `a studio opens: ${r.text}`);
+  section(`a dance studio: opened by a qualified dancer (${r.ok ? 'Pointe & Shoot Dance Academy is open' : 'not opened'})`);
+}
+
+// 10. Choreographing a musical: hired by pitch, on dancing and choreography already done.
+{
+  dancer(30, 60);
+  let made = 0, withChoreo = 0;
+  for (let i = 0; i < 120; i++) { const m = ent.makeProduction('musical', 'regional', 'us'); if (!m) continue; made++; if (m.cast.some((r) => r.kind === 'choreographer' && r.open && !r.who)) withChoreo++; }
+  check(Math.abs(withChoreo / made - CHOREOGRAPHER.call) < 0.12, `choreographers wanted for ${withChoreo} of ${made} musicals`);
+  const post = (p, tier) => { for (let i = 0; i < 40; i++) { const m = ent.makeProduction('musical', tier, 'us'); const r = m?.cast.find((x) => x.kind === 'choreographer'); if (r) return { m, r }; } return null; };
+  let p = dancer(30, 70);
+  let x = post(p, 'regional');
+  check(/top of the field/.test(ent.whyNot(x.m, x.r, p)), 'a middling dancer is not hired to choreograph');
+  p = dancer(30, 88);
+  x = post(p, 'regional');
+  check(/choreography credit/.test(ent.whyNot(x.m, x.r, p)), 'a fine dancer who has never choreographed is not either');
+  p = dancer(30, 88);
+  dance.danceOf(p).gigs.push({ id: 'cv', year: store.state.year - 1, kind: 'choreo', client: 'x', fee: 0, weeks: 3, hours: 0, prestige: 25, paid: true });
+  x = post(p, 'regional');
+  check(ent.whyNot(x.m, x.r, p) === '', `one music video choreographed opens a regional musical: ${ent.whyNot(x.m, x.r, p)}`);
+  const big = post(p, 'major_stage');
+  check(/3 choreography credits/.test(ent.whyNot(big.m, big.r, p)), 'Broadway wants three');
+  let hired = null;
+  for (let i = 0; i < 12 && !hired; i++) { const y = post(p, 'regional'); hired = ent.audition(y.m.id, y.r.idx, 'study', y.r.approach).contract ?? null; if (hired) x = y; }
+  check(hired && hired.hours === Math.round(38 * CHOREOGRAPHER.hours), `a choreographer is hired (${hired?.hours} hours a week)`);
+  if (hired) {
+    ent.sign(hired.id);
+    for (let i = 0; i < 3 && dance.choreoRecord(p) < 2; i++) year();
+    check(dance.choreoRecord(p) >= 2, `the show counts on the choreography record (${dance.choreoRecord(p)})`);
+  }
+  section(`choreography: ${withChoreo} of ${made} musicals hire a choreographer by pitch; one video opens a regional show, Broadway wants three`);
+}
+
+// 11. K-pop: in South Korea, idol groups hire backup dancers and choreographers.
+{
+  const p = dancer(24, 85, { record: 5 });
+  p.countryId = 'kr'; p.city = 'Seoul';
+  const seen = new Set();
+  for (let i = 0; i < 8; i++) { p.age += 1; for (const o of dance.offers(p)) seen.add(o.kind); }
+  check(seen.has('idol_backup') || seen.has('idol_choreo'), `idol work is offered in Seoul (${[...seen].join(', ')})`);
+  const us = dancer(24, 85, { record: 5 });
+  const seenUs = new Set(); for (let i = 0; i < 8; i++) { us.age += 1; for (const o of dance.offers(us)) seenUs.add(o.kind); }
+  check(!seenUs.has('idol_backup') && !seenUs.has('idol_choreo'), 'not in the United States');
+  section(`K-pop: idol backup and comeback choreography are offered in Seoul, not elsewhere`);
+}
+
+// 12. A musician who dances well stars in their own music video, and it sells better.
+{
+  const run = (skill) => {
+    do { store.state = createLife({ countryId: 'us' }); } while (store.state.player.royal);
+    const p = store.state.player;
+    p.age = 24; p.birthYear = store.state.year - 24; p.finance.cash = 100000; p.talents.music = 75; p.talents.singing = 75; p.talents.dance = skill;
+    const ms = music.musicians(p.countryId);
+    music.formAct('band', { with: ms.slice(0, 3).map((n) => n.id) });
+    for (let i = 0; i < 3; i++) music.writeSong();
+    const r = music.record('single', { video: true });
+    const rel = Object.values(ent.ent().releases ?? {}).at(-1);
+    return { r, rel };
+  };
+  const good = run(80), poor = run(30);
+  check(good.r.ok && good.rel?.danced && /choreograph/.test(good.r.text), `a dancing musician dances in their video: ${good.r.text}`);
+  check(poor.r.ok && poor.rel && !poor.rel.danced, 'one who cannot dance does not');
+  section('music videos: a musician who dances well choreographs and stars in their own, and it sells better');
 }
 
 if (problems.length) { console.log('PROBLEMS:'); for (const x of [...new Set(problems)].slice(0, 30)) console.log(' -', x); process.exit(1); }

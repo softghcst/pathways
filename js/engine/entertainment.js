@@ -33,6 +33,8 @@ import { registerEmployer } from './employers.js';
 import { fameOf, gain, regard, exists, recognitionIn } from './fame.js';
 import { rollTerms } from './agents.js';
 import { seeded } from './sportsPlay.js';
+import { CHOREOGRAPHER } from '../data/dance.js';
+import { choreoRecord } from './dance.js';
 import { canFit } from './worklife.js';
 
 const result = (ok, text, tone = ok ? 'good' : 'bad') => ({ ok, text, tone });
@@ -244,6 +246,12 @@ export function makeProduction(kind, tier, countryId, o = {}) {
     roles.push({ idx: roles.length, kind: 'dance_ensemble', character: danceLuck.pick(['the dance ensemble', 'the dance captain\'s line', 'the swing dancers', 'the tap line']), ages: [18, 35],
       approach: danceLuck.pick(['bold', 'restrained', 'playful']), who: null, perf: null, fee: Math.round(TIERS[tier].fee * ROLE_KINDS.dance_ensemble.fee), open: true });
   }
+  // A musical's choreographer is often hired by pitch, from dancers who have choreographed before (CHOREOGRAPHER).
+  const choreoLuck = seeded(`${id}:choreo`);
+  if (kind === 'musical' && choreoLuck.chance(CHOREOGRAPHER.call)) {
+    roles.push({ idx: roles.length, kind: 'choreographer', character: 'the show\'s dances', ages: [22, 70], approach: choreoLuck.pick(['bold', 'restrained', 'playful']),
+      who: null, perf: null, fee: Math.round(TIERS[tier].fee * ROLE_KINDS.choreographer.fee), open: true });
+  }
   if (nods.length && nodLuck.chance(TITLE_NODS.share)) named = nodLuck.pick(nods);
   if (CHILD_PARTS.share[kind] && luck.chance(CHILD_PARTS.share[kind])) {
     roles.push({ idx: roles.length, kind: 'child', character: luck.pick(CHILD_PARTS.characters), ages: [...luck.pick(CHILD_PARTS.ages)], approach: luck.pick(['bold', 'restrained', 'playful']),
@@ -257,7 +265,7 @@ export function makeProduction(kind, tier, countryId, o = {}) {
   // Most parts go to people already working; some are open to anyone who comes in.
   const used = new Set();
   for (const r of p.cast) {
-    if (['child', 'dance_ensemble'].includes(r.kind)) continue; // open calls, cast from whoever comes (CHILD_PARTS, DANCE_CALL)
+    if (['child', 'dance_ensemble', 'choreographer'].includes(r.kind)) continue; // open calls and pitches, not the casting pool (CHILD_PARTS, DANCE_CALL, CHOREOGRAPHER)
     if (rng.chance(o.openShare ?? 0.35) || (tier === 'community') || (tier === 'student')) { r.open = true; continue; }
     const fits = performers.filter((n) => !used.has(n.id) && ageOf(n) >= r.ages[0] - 4 && ageOf(n) <= r.ages[1] + 8 && npcSkill(n, SKILLS_FOR[kind]) >= 25 + TIERS[tier].reach * 45);
     const pick = fits.sort((a, b) => npcSkill(b, SKILLS_FOR[kind]) + (b.flags.star.fame - a.flags.star.fame) * 0.3 - npcSkill(a, SKILLS_FOR[kind]))[rng.int(0, Math.min(3, fits.length - 1))];
@@ -315,7 +323,12 @@ export function whyNot(prod, r, p = player()) {
   if (p.age < r.ages[0] - 2 || p.age > r.ages[1] + 4) return `They are casting someone of about ${r.ages[0]}–${r.ages[1]}.`;
   if (p.age < 6) return 'Too young to work.';
   if (p.age < 16 && !guardianConsents(p)) return 'A parent or guardian has to agree to a child working, and yours have not.';
-  if (r.kind === 'child') {
+  if (r.kind === 'choreographer') {
+    // A choreographer is hired on their dancing and the choreography they have done (CHOREOGRAPHER), not on acting credits.
+    if (p.talents.dance < CHOREOGRAPHER.skill) return 'They want a choreographer who dances at the top of the field.';
+    const want = CHOREOGRAPHER.record[prod.tier] ?? 0;
+    if (choreoRecord(p) < want) return `They want ${want} choreography credit${want === 1 ? '' : 's'} (a music video, a show) behind you.`;
+  } else if (r.kind === 'child') {
     // Children's parts are cast at open calls for children: the major stage wants one professional credit, or an agent.
     if (prod.tier === 'major_stage' && proCredits(p) < 1 && !f.agent) return `Children's parts ${districtOf(prod)?.on ?? 'on the major stage'} go to children with a professional credit (a regional or touring part) or an agent.`;
   } else {
@@ -426,7 +439,8 @@ export function audition(productionId, idx, prep = 'study', approach = 'restrain
   }
   const local = COUNTRIES[prod.countryId];
   const fee = K(r.fee * (1 + recognitionIn(p.countryId, p) / 200), local);
-  const hours = Math.round(PRODUCTION_KINDS[prod.kind].hours * (r.kind === 'child' || p.age < 18 ? CHILD_PARTS.hours : 1)); // a child's calls are shorter, whatever the part
+  // A child's calls are shorter, whatever the part; a choreographer's work is mostly the rehearsal room.
+  const hours = Math.round(PRODUCTION_KINDS[prod.kind].hours * (r.kind === 'child' || p.age < 18 ? CHILD_PARTS.hours : 1) * (r.kind === 'choreographer' ? CHOREOGRAPHER.hours : 1));
   const contract = { id: uid('con'), productionId: prod.id, idx, fee, weeks: weeksOf(prod), hours, years: prod.runYears,
     status: 'offered', age: p.age, asked: false, perf: Math.round(craft), paidYears: [], agent: f.agent ? { ...f.agent } : null };
   f.contracts.push(contract);
@@ -654,7 +668,7 @@ export function tickEntertainment() {
       for (const r of prod.cast) {
         // An open call's part (a child's, the dance ensemble) goes to one of the children or dancers who came, not to
         // a working actor from the pool: nobody on record, unless the player won it.
-        if (r.who || ['child', 'dance_ensemble'].includes(r.kind)) continue;
+        if (r.who || ['child', 'dance_ensemble', 'choreographer'].includes(r.kind)) continue;
         const fits = pool(prod.countryId).filter((n) => ageOf(n) >= r.ages[0] - 4 && ageOf(n) <= r.ages[1] + 8 && !prod.cast.some((x) => x.who === n.id));
         const anyone = pool(prod.countryId).filter((n) => !prod.cast.some((x) => x.who === n.id)).sort((a, b) => Math.abs(ageOf(a) - r.ages[0]) - Math.abs(ageOf(b) - r.ages[0]));
         r.who = (fits.sort((a, b) => npcSkill(b, SKILLS_FOR[prod.kind]) - npcSkill(a, SKILLS_FOR[prod.kind]))[rng.int(0, Math.min(4, fits.length - 1))] ?? anyone[0])?.id ?? null;

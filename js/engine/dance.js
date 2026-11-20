@@ -11,7 +11,7 @@ import { rng } from '../rng.js';
 import { clamp, fmtMoney, localWage } from '../util.js';
 import { store, player, country, log, milestone } from '../state.js';
 import { COUNTRIES } from '../data/countries.js';
-import { DANCE_GIGS, DANCE_YEAR, DANCE_STYLES, DANCE_WANTS, DANCE_BRIEFS, DANCE_CLIENTS, DANCE_SHOW, DANCE_COMPETITIONS, COMPETITIONS_A_YEAR } from '../data/dance.js';
+import { DANCE_GIGS, DANCE_YEAR, DANCE_STYLES, DANCE_WANTS, DANCE_BRIEFS, DANCE_CLIENTS, DANCE_SHOW, DANCE_COMPETITIONS, COMPETITIONS_A_YEAR, IDOL_GROUPS, STUDIO_READY } from '../data/dance.js';
 import { BRANDS, CHILD_TRUST_SHARE } from '../data/fame.js';
 import { ent, workOf, guardianConsents, pool } from './entertainment.js';
 import { gain, regard } from './fame.js';
@@ -41,6 +41,17 @@ export function danceTraining(p = player()) {
 /** The jobs on a dancer's record (gigs; competitions are not jobs). */
 export const record = (p = player()) => danceOf(p).gigs.length;
 /** Whether the dance page is for this person: a child or adult who dances, or anyone with a dance record. */
+/** Choreography on the record: choreography gigs, and musicals choreographed (engine/entertainment.js). */
+export function choreoRecord(p = player()) {
+  const gigs = danceOf(p).gigs.filter((x) => ['choreo', 'idol_choreo'].includes(x.kind)).length;
+  const shows = workOf(p).credits.filter((c) => ent().productions[c.productionId]?.cast[c.idx]?.kind === 'choreographer').length;
+  return gigs + shows;
+}
+/** Qualified to teach and to run a studio (data/business.js 'dance_studio'): STUDIO_READY. */
+export function studioReady(p = player()) {
+  if (p.talents.dance < STUDIO_READY.skill) return false;
+  return !!danceTraining(p) && danceTraining(p) !== 'theater' || (p.career?.experience?.dance ?? 0) >= STUDIO_READY.years || record(p) >= STUDIO_READY.jobs;
+}
 export const dances = (p = player()) => p.age >= 6 && (p.talents.dance >= 25 || record(p) > 0 || danceOf(p).comps.length > 0);
 
 /** Why a dancer cannot go for this kind of gig, or ''. */
@@ -70,6 +81,10 @@ function clientFor(kind, p) {
     const singers = pool(p.countryId).filter((n) => (n.flags.star?.skill?.singing ?? 0) >= 60);
     return singers.length ? full(rng.pick(singers)) : 'a pop star';
   }
+  if (g.kpop) {
+    const groups = Object.values(store.state.kpop?.groups ?? {}).filter((x) => x.status !== 'disbanded' && x.name);
+    return groups.length ? rng.pick(groups).name : rng.pick(IDOL_GROUPS);
+  }
   if (g.brand) return rng.pick(BRANDS);
   return rng.pick(DANCE_CLIENTS[kind] ?? ['a production company']);
 }
@@ -79,7 +94,7 @@ export function offers(p = player()) {
   const d = danceOf(p);
   if (d.offers.age === p.age) return d.offers.list;
   const skill = p.talents.dance;
-  const kinds = Object.entries(DANCE_GIGS).filter(([, g]) => p.age >= g.minAge && g.bar <= skill + DANCE_YEAR.reach);
+  const kinds = Object.entries(DANCE_GIGS).filter(([, g]) => p.age >= g.minAge && g.bar <= skill + DANCE_YEAR.reach && (!g.only || g.only.includes(p.countryId)));
   const list = kinds.length ? Array.from({ length: DANCE_YEAR.offers }, () => {
     const [kind, g] = rng.pick(kinds);
     const wants = rng.pick(DANCE_WANTS[kind]);

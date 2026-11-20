@@ -31,6 +31,7 @@
 // alone, no partners) pays none: their profit is their income. What the owner then
 // takes out is income, taxed with the rest of their pay.
 import { rng } from '../rng.js';
+import { studioReady } from './dance.js';
 import { clamp, fmtMoney, localWage, localCost, niceRound, uid } from '../util.js';
 import { store, player, country, livingNpcs, log, milestone } from '../state.js';
 import { businessExists } from '../data/eras.js';
@@ -120,6 +121,7 @@ export function startBlock(type) {
   }
   if (n.land && !['country', 'mansion'].includes(p.assets.find((a) => a.id === p.homeId)?.catalogId)) return 'Needs land of your own: a country property you live in.';
   if (n.flag && !p.flags[n.flag]) return n.flagText ?? 'You are not ready for this yet.';
+  if (n.dancer && !studioReady(p)) return 'Parents choose a studio by its teacher: you need a dance degree, three years in a dance company, or ten paid dance jobs, and to dance well.';
   if (n.experienceTotal && Object.values(c.experience).reduce((a, b) => a + b, 0) < n.experienceTotal) return `Clients want ${n.experienceTotal} years of working life behind you.`;
   if (n.fame && (p.hidden.fame ?? 0) < n.fame) return 'A brand like this sells on a famous name, and yours is not famous enough yet.';
   if (openBusinesses().length >= 3) return 'Three businesses is as many as one person can keep hold of.';
