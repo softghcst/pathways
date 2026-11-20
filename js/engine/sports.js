@@ -711,7 +711,9 @@ export function schoolSeason(name, state = store.state) {
   if (!e) e = newEntry(state, p, a, sport);
   if (e.status !== 'active') { fillEntry(state, p, e); e.status = 'active'; e.plan = { type: 'balanced', hours: Math.max(2, e.plan?.hours ?? 0) }; }
   const school = schoolName(p);
-  const org = findOrg(state, sport, 'school', { key: `school/${id}/${p.countryId}/${school}`, name: `${school} ${sport.name}` });
+  // The team belongs to the school, where the school is: a boarder whose family moves abroad stays on the same team.
+  const where = (atSchool(p) ? currentSchool()?.countryId : null) ?? p.countryId;
+  const org = findOrg(state, sport, 'school', { key: `school/${id}/${where}/${school}`, name: `${school} ${sport.name}` });
   e.schoolSport = name;
   if (e.orgId !== org.id && !e.contractId && !['club', 'academy', 'college', 'pro', 'elite'].includes(e.level)) joinOrg(org, state);
   else if (e.orgId !== org.id) { // a club or academy player still plays for their school; the school team is a second team

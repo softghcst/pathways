@@ -37,7 +37,8 @@ const btn = (act, label, o = {}) => `<button type="button" class="btn ${o.cls ??
 const face = (n) => `<div class="avatar">${avatarSvg({ age: n.age, gender: n.gender, appearance: n.appearance, seed: n.id, mood: n.meters.relationship, label: n.firstName })}</div>`;
 const money = (n, c = country()) => fmtMoney(n, c);
 const nameOf = (who) => (who === 'player' ? 'You' : who ? `${store.state.npcs[who]?.firstName ?? ''} ${store.state.npcs[who]?.lastName ?? ''}`.trim() || 'Someone' : '');
-const kindName = (prod) => `${TIERS[prod.tier].name} ${PRODUCTION_KINDS[prod.kind].name.toLowerCase()}`;
+// "Broadway musical" for a major-stage show in New York (engine/entertainment.js tierName), else "Regional theater musical".
+const kindName = (prod) => `${ent.tierName(prod)} ${PRODUCTION_KINDS[prod.kind].name.toLowerCase()}`;
 const row = (act, arg, main, sub, side = '', n = null) => `<button type="button" class="row world-row" data-act="${act}" data-arg="${esc(arg)}">${n ? face(n) : ''}
   <div class="main"><strong>${esc(main)}</strong>${sub ? `<small>${esc(sub)}</small>` : ''}</div>${side ? `<div class="side">${esc(side)}</div>` : ''}</button>`;
 
@@ -274,7 +275,7 @@ const VIEWS = {
     if (!x) return '<p class="empty">That production is no longer on record.</p>';
     const R = x.reception;
     const o = ent.org(x.orgId);
-    return `<div class="card"><h3>${esc(x.title)}</h3>${kv([['What it is', `${kindName(x)}, ${x.genre}`], ['Made by', o?.name ?? '—'], ['Where', `${x.city}, ${COUNTRIES[x.countryId]?.name ?? ''}`], ['Directed by', nameOf(x.directorId)], ...(x.basedOn ? [['Based on', `the book by ${x.basedOn.author}`]] : []),
+    return `<div class="card"><h3>${esc(x.title)}</h3>${kv([['What it is', `${kindName(x)}, ${x.genre}`], ['Made by', o?.name ?? '—'], ['Where', `${ent.districtOf(x) ? `${ent.districtOf(x).name}, ` : ''}${x.city}, ${COUNTRIES[x.countryId]?.name ?? ''}`], ['Directed by', nameOf(x.directorId)], ...(x.basedOn ? [['Based on', `the book by ${x.basedOn.author}`]] : []),
       ['When', `${x.workYear}${x.runYears > 1 ? `–${x.workYear + x.runYears - 1}` : ''}`], ['Status', { casting: 'Casting', production: 'In production', running: 'Running', released: 'Released', closed: 'Closed' }[x.status]],
       ...(R ? [['Critics', `${R.critics}/100`], ['Audiences', `${R.audience}/100`], [R.profit >= 0 ? 'Made' : 'Lost', money(Math.abs(R.profit), COUNTRIES[x.countryId])], ...(x.abroad.length ? [['Seen in', `${x.abroad.length} other ${x.abroad.length === 1 ? 'country' : 'countries'}`]] : [])] : [])])}</div>
       <div class="section-label">Cast</div>${x.cast.filter((r) => r.who).map((r) => { const n = r.who === 'player' ? null : store.state.npcs[r.who];
@@ -632,7 +633,7 @@ const ACTIONS = {
     if (!r) return;
     const why = ent.whyNot(prod, r);
     const local = COUNTRIES[prod.countryId];
-    const body = `${kindName(prod)}, ${prod.genre}, from ${ent.org(prod.orgId)?.name ?? 'a company'} in ${prod.city}. The part: ${ROLE_KINDS[r.kind].name.toLowerCase()}, ${r.character}, aged about ${r.ages[0]}–${r.ages[1]}. ${prod.workYear} work: ${PRODUCTION_KINDS[prod.kind].weeks} weeks${prod.runYears > 1 ? ` a year for ${prod.runYears} years` : ''}. ${r.fee ? `Pays about ${money(Math.round(localWage(r.fee, local)), local)}.` : 'Unpaid.'}${why ? ` ${why}` : ''}`;
+    const body = `${kindName(prod)}, ${prod.genre}, from ${ent.org(prod.orgId)?.name ?? 'a company'} ${ent.districtOf(prod)?.on ?? `in ${prod.city}`}. The part: ${ROLE_KINDS[r.kind].name.toLowerCase()}, ${r.character}, aged about ${r.ages[0]}–${r.ages[1]}. ${prod.workYear} work: ${PRODUCTION_KINDS[prod.kind].weeks} weeks${prod.runYears > 1 ? ` a year for ${prod.runYears} years` : ''}. ${r.fee ? `Pays about ${money(Math.round(localWage(r.fee, local)), local)}.` : 'Unpaid.'}${why ? ` ${why}` : ''}`;
     const go = await pickModal({ title: prod.title, body, cancel: 'Back', options: [{ value: 'go', label: 'Audition', disabled: !!why || !!ent.workOf().applied[arg], sub: ent.workOf().applied[arg] ? 'You have auditioned.' : '' }, { value: 'view', label: 'Look at the production and its cast' }] });
     if (go === 'view') return x.go('production', pid);
     if (go !== 'go') return undefined;

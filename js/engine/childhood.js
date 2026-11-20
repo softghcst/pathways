@@ -14,7 +14,7 @@ import { remember } from './conditions.js';
 import { spendable, takeFrom } from './npcMoney.js';
 import { book } from './ledger.js';
 import { workLaw } from './worklife.js';
-import { CHILD_ACTIVITIES, CHILD_ACTS_A_YEAR, EARLY_CAP, ALLOWANCE, CHORE_PAY, SMALL_JOBS, SMALL_JOBS_A_YEAR } from '../data/childhood.js';
+import { CHILD_ACTIVITIES, CHILD_ACTS_A_YEAR, EARLY_CAP, LESSON_CAP, ALLOWANCE, CHORE_PAY, SMALL_JOBS, SMALL_JOBS_A_YEAR } from '../data/childhood.js';
 
 const result = (ok, text, tone = ok ? 'good' : 'bad') => ({ ok, text, tone });
 const C = () => (player().flags.childhood ??= { acts: {}, early: {}, jobs: {}, allowance: null, saving: null });
@@ -39,14 +39,14 @@ export function childActivities() {
   });
 }
 
-function grow(path, by) {
+function grow(path, by, lesson = false) {
   const p = player();
   const [where, key] = path.split('.');
   if (where === 'talents') {
-    // A small child's classes add up to a head start and no more.
-    const c = C(); c.talentGain ??= {};
-    if ((c.talentGain[key] ?? 0) >= EARLY_CAP) return;
-    c.talentGain[key] = (c.talentGain[key] ?? 0) + by;
+    // A small child's classes add up to a head start and no more; lessons, kept separately, to a little more.
+    const c = C(); const tally = lesson ? (c.lessonGain ??= {}) : (c.talentGain ??= {});
+    if ((tally[key] ?? 0) >= (lesson ? LESSON_CAP : EARLY_CAP)) return;
+    tally[key] = (tally[key] ?? 0) + by;
   }
   p[where][key] = clamp(p[where][key] + by);
 }
@@ -69,7 +69,7 @@ export function doActivity(id) {
     else if (k === 'bond') { if (parent) parent.meters.relationship = clamp(parent.meters.relationship + v); }
     else if (k === 'siblings') { if (sibling) sibling.meters.relationship = clamp(sibling.meters.relationship + v); }
     else if (k === 'friend') { if (friend) { friend.meters.relationship = clamp(friend.meters.relationship + v); friend.lastInteractionAge = p.age; } }
-    else grow(k, v);
+    else grow(k, v, !!a.lesson);
   }
   // Other children: someone new, someone known, a game, a quarrel. Or nobody, and that is fine too.
   if (a.friend && p.age >= 2) {

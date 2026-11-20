@@ -30,7 +30,10 @@ award bodies, venues, release types, deal terms). Everything named there is fict
 - **No invented credits.** Credits, nominations and discographies are read from productions, releases and seasons, never written as free text.
 - **Time is real.** Productions and tours take weeks; a stage run, a TV series and a tour clash with each other; everything appears in the weekly load.
 - **Eras.** `MEDIA_ERAS` gates what exists in a year: no film before 1910, no TV before 1950, no recorded music before 1900, no awards before their founding year.
-- **Children.** Under-18s need a guardian's agreement; a share of their pay is held in trust and released at 18. A famous parent gives family recognition, not credits, skill or an audience.
+- **Children.** Under-18s need a guardian's agreement; a share of their pay is held in trust and released at 18. A famous parent gives family recognition, not credits, skill or an audience. Performers are exempt from the minimum working age, as child labor laws make them (a child works under an entertainment permit): from 6 a child may sign to perform, within the hours a minor may work, and every part a minor plays asks a little under half an adult's hours.
+- **Theater districts.** A country's major stage stands in its real theater district where it has one (`THEATER_DISTRICTS` in `js/data/fame.js`): Broadway in New York, the West End, Toronto's Entertainment District, Melbourne's East End, the Gran Vía, the Grands Boulevards, Hibiya, Daehak-ro and Avenida Corrientes. A show there is a "Broadway musical". The district is a place; the theaters in it, their shows and any awards stay invented. A major stage built before districts, outside one, keeps its old name.
+- **Titles that wink.** About a third of plays and musicals take a title that tips its hat to a famous show (`TITLE_NODS`: *Next to Nothing*, *Dogs!*, *A Bus Named Desire*), never one already running. The usual title is still drawn (kept as `drawn`), so the world's rolls are unchanged.
+- **The child stage path.** Singing lessons, acting class, dance for the stage (6–12) and youth theater (7–13) train a child properly, up to `LESSON_CAP` on each talent (`js/data/childhood.js`). Most musicals and about a third of plays, at every level up to the major stage, have a child's part (`CHILD_PARTS` in `js/data/fame.js`): no grown performer is cast in it, and children audition against other children, stronger the bigger the stage. A child needs no agent or fame for one; the major stage wants one professional credit (a regional or touring part) or an agent. A child who worked on a professional stage is remembered by musical theater at 18: a better chance at its audition, and a place in the ensemble for a child of the major stage (`mt_performer` in `js/data/careers.js`).
 - **Generations.** When a life continues as a child, the world carries over: the parent's productions, awards and bands are remembered as the parent's (an NPC id), and the heir starts with none of their own.
 
 ## Balance
@@ -54,6 +57,7 @@ The pass also fixed sales and shows abroad being counted in the other country's 
 
 ```
 node tests/fame.mjs    # profile, world, the acting vertical slice incl. reload, odds, schedules, awards once, eras, press truth, children, a 25-year career
+node tests/child-stage.mjs  # lessons, children's parts by tier, children auditioning against children, a child's hours and permit, a theater childhood carried into musical theater
 node tests/fame2.mjs   # sport played match by match with fame only from results, modeling, books, celebrity brands, famous lives, comebacks, the family record
 node tests/music.mjs   # bands as people, songs, releases judged once, royalties paid once, deals and advances, tours, charts and music awards, leaving, saves, heirs, eras
 ```

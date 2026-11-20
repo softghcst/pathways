@@ -139,7 +139,8 @@ const BASE_CAREERS = [
   { id: 'mt_performer', name: 'Musical theater', category: 'performing', type: 'fulltime', hire: 'audition', stress: 2,
     skill: 'tripleThreat', req: { minAge: 18, stats: { tripleThreat: 55 } }, fame: { from: 2, label: 'Musical theater star' },
     doors: [{ flag: 'proDebut', guaranteed: true, level: 1, text: 'The company that cast you at the open call has your contract ready.' },
-      { flag: 'directorRec', bonus: 0.1 }],
+      { flag: 'childStageMajor', guaranteed: true, level: 0, text: 'You grew up on the biggest stage in the country. The company remembers you, and has a place for you in the ensemble.' },
+      { flag: 'childStage', bonus: 0.2 }, { flag: 'directorRec', bonus: 0.1 }],
     levels: L(['Ensemble member', 28, 40, 2], ['Featured ensemble', 45, 65, 3, { tripleThreat: 66 }],
       ['Principal performer', 80, 130, 4, { tripleThreat: 78 }], ['Leading performer', 160, 320, 0, { tripleThreat: 88 }]) },
   // Children and teenagers can work as actors around school. At 18 they age

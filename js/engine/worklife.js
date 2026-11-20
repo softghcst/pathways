@@ -153,7 +153,10 @@ export function canFit(hours, o = {}) {
   let total = load.total;
   let paid = load.paid;
   if (o.replacesMain) { total -= mainHours(c) + commute(c, p); paid -= mainHours(c); }
-  if (p.age < law.workAge) return result(false, `In ${country().name} you must be ${law.workAge} to work for pay.`);
+  // Performers are the exception to the minimum working age, as child labor laws make them: a child may act, sing or
+  // dance for pay under an entertainment work permit, with a parent's consent (engine/entertainment.js asks for it)
+  // and their earnings held in trust. The hours a minor may work still apply.
+  if (p.age < law.workAge && !o.performer) return result(false, `In ${country().name} you must be ${law.workAge} to work for pay.`);
   if (p.age < 18 && paid + hours > law.minorHours) return result(false, `Under 18, the law here allows ${law.minorHours} hours of paid work a week during the school year. This would make ${paid + hours}.`);
   if (total + hours > LOAD.impossible) return result(false, `That would make ${total + hours} hours a week with everything else. There are not enough hours in the week.`);
   if (o.kind !== 'job' && !o.replacesMain) {

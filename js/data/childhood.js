@@ -26,11 +26,20 @@ export const CHILD_ACTIVITIES = [
   A('club', 'Join an after-school club', [6, 13], { friend: 0.25, grows: { 'stats.charm': 0.5 }, text: 'A club after school: you are given a job, and do it.' }),
   A('hobby', 'Keep up a hobby', [6, 15], { grows: { 'stats.intellect': 0.3, 'hidden.discipline': 0.4 }, text: 'An hour a day on the thing you are making.' }),
   A('fair', 'Take part in a school event', [6, 14], { friend: 0.15, grows: { 'stats.charm': 0.4 }, text: 'The school fair. You run a stall.' }),
+  // Lessons, for a child who wants to be on stage: real training, so they count for more than a small child's classes
+  // (up to LESSON_CAP on each talent, not EARLY_CAP). A parent takes a younger child.
+  A('singing', 'Singing lessons', [6, 12], { parentUnder: 9, lesson: true, grows: { 'talents.singing': 2 }, text: 'Scales at an upright piano, and a song you have to learn by next week.' }),
+  A('acting', 'Acting class', [6, 12], { parentUnder: 9, lesson: true, friend: 0.2, grows: { 'talents.acting': 2 }, text: 'Pretending to be a tiger, then a tiger who has lost something.' }),
+  A('stagedance', 'Dance for the stage', [6, 12], { parentUnder: 9, lesson: true, grows: { 'talents.dance': 2 }, text: 'Tap shoes, a mirror the length of the room, and counts of eight.' }),
+  A('youththeater', 'Youth theater', [7, 13], { lesson: true, friend: 0.3, grows: { 'talents.singing': 1, 'talents.dance': 1, 'talents.acting': 1, 'stats.charm': 0.3 },
+    text: 'Saturday mornings in a church hall, putting on a show for the parents at the end of term.' }),
 ];
 /** What a child may do in a year: not everything, every year. */
 export const CHILD_ACTS_A_YEAR = 4;
 /** The most that early likings and talents can add up to: a head start, never mastery. */
 export const EARLY_CAP = 6;
+/** The most that lessons (singing, acting, dance for the stage, youth theater) can add to each talent: proper training, still not mastery. */
+export const LESSON_CAP = 16;
 
 // Pocket money. Base units a year at each age (made local, and of its time, by the game's money): a little, growing.
 export const ALLOWANCE = { from: 5, until: 17, yearly: (age) => Math.round(age * 22) };
