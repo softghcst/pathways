@@ -170,6 +170,8 @@ section('data: children\'s parts by tier, lessons, and a door into musical theat
     check(Number.isFinite(p.finance.cash) && p.talents.singing <= 100, `age ${a}: figures out of range`);
   }
   check(parts >= 1, `a trained child with an agreeable parent books at least one child part by 18 (${parts})`);
+  const miscast = Object.values(ent.ent().productions).flatMap((x) => x.cast).filter((r) => ['child', 'dance_ensemble'].includes(r.kind) && r.who && r.who !== 'player');
+  check(!miscast.length, `${miscast.length} open-call parts (a child's, a dance ensemble) went to working actors from the pool`);
   section(`a theater childhood from 6 to 18 runs cleanly: ${parts} child parts, ${ent.workOf(p).credits.length} credits${p.flags.childStageMajor ? ', the major stage among them' : ''}`);
 }
 

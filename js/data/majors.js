@@ -33,6 +33,14 @@ export const MAJORS = [
   M('musical_theater_bfa', 'Musical Theater (BFA)', 0.3, 2.0,
     { talents: { singing: 7, dance: 7, acting: 7 }, stats: { health: 1 } }, [],
     { audition: true, auditionBase: 0.12, blurb: 'Conservatory training: studio all day, shows at night. Hard to get into, fastest growth.' }),
+  // Dance, judged at audition on dancing alone (auditionSkill). The BFA is a conservatory: ballet, modern and jazz
+  // every day, and it is what companies, tours and choreographers look for (engine/dance.js danceTraining).
+  M('dance', 'Dance (BA)', 0.2, 2.0,
+    { talents: { dance: 5 }, stats: { health: 1, intellect: 1 } }, [],
+    { audition: true, auditionBase: 0.3, auditionSkill: 'talents.dance', blurb: 'Technique classes inside a broad degree. Easier audition, steady growth.' }),
+  M('dance_bfa', 'Dance (BFA)', 0.3, 2.0,
+    { talents: { dance: 8 }, stats: { health: 2 } }, [],
+    { audition: true, auditionBase: 0.12, auditionSkill: 'talents.dance', blurb: 'Conservatory training: ballet, modern and jazz every day. Hard to get into, fastest growth.' }),
 ];
 
 export const MAJOR_BY_ID = Object.fromEntries(MAJORS.map((m) => [m.id, m]));

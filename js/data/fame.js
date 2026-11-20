@@ -77,7 +77,12 @@ export const ROLE_KINDS = {
   voice_lead: { name: 'Lead voice', fee: 0.5, weight: 0.4, field: 1.2 },
   spokesperson: { name: 'On-screen spokesperson', fee: 0.6, weight: 0.1, field: 1 },
   child: { name: 'Child part', fee: 0.15, weight: 0.3, field: 1 },
+  dance_ensemble: { name: 'Dance ensemble', fee: 0.22, weight: 0.08, field: 0.9 },
 };
+/** Parts judged on something other than the production's usual skills: a dance ensemble is cast on dancing. */
+export const ROLE_SKILLS = { dance_ensemble: { 'talents.dance': 0.8, 'talents.singing': 0.1, 'talents.acting': 0.1 } };
+/** How often a musical holds an open call for its dance ensemble (its own luck, by the production). */
+export const DANCE_CALL = 0.6;
 
 /**
  * Children's parts on stage: the orphan, the youngest child, the kid who sees the ghost. Plays and musicals at

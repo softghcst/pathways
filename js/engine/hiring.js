@@ -24,6 +24,7 @@ import { residency } from './citizenship.js';
 import { hiringClimate } from './economy.js';
 import { stageTierOf, stageTraining, proCredits, workOf, districtOf } from './entertainment.js';
 import { STAGE_BAR } from '../data/fame.js';
+import { danceTraining } from './dance.js';
 
 const result = (ok, text, tone = ok ? 'good' : 'bad') => ({ ok, text, tone });
 const yrs = (n) => `${n} ${n === 1 ? 'year' : 'years'}`;
@@ -172,7 +173,9 @@ export function decide(id, answers = [], o = {}) {
     // A major-stage company judges against a far higher bar, before a far bigger crowd; stage training shows (STAGE_BAR).
     const bigStage = car.id === 'mt_performer' && stageTierOf(e.id) === 'major_stage';
     const need = bigStage ? STAGE_BAR.company.need : car.req.stats?.[car.skill] ?? 50;
-    const trained = car.id === 'mt_performer' ? STAGE_BAR.training[stageTraining(p)]?.company ?? 0 : 0;
+    // Training shows: in musical theater for a company's season, in dance for a dance company (a BFA in dance most).
+    const trained = car.id === 'mt_performer' ? STAGE_BAR.training[stageTraining(p)]?.company ?? 0
+      : car.id === 'dance' ? ({ bfa: 0.12, ba: 0.05, theater: 0.02 })[danceTraining(p)] ?? 0 : 0;
     score = clamp(0.5 + ((Number(resolve(piece.path)) || 0) - need) / 60, 0, 1);
     chance = clamp(0.3 + ((Number(resolve(piece.path)) || 0) - need) / 45 + piece.edge + bonus + trained - stretch - crowd - (bigStage ? STAGE_BAR.company.crowd : 0), 0.03, 0.95);
     how = `You chose ${piece.t.toLowerCase()}.`;

@@ -98,6 +98,7 @@ node tests/health.mjs          # conditions and diagnosis, therapy and DBT, medi
 node tests/business.mjs        # owning a business: starting, staff, the accounts, the owner paid once, partners, selling, failing, heirs
 node tests/worklife.mjs        # every outcome of every working-life scene played through; romance at work, children's leanings, royals at work, two-career households
 node tests/careers.mjs         # the occupation catalog, employers and openings, hiring, payroll once a year, side jobs, workplaces, freelancing, the military, retirement, records across generations
+node tests/dance.mjs           # a dancer's life: BFA/BA in dance, gigs from commercials to tours and TV, competitions, dance ensemble parts
 node tests/stage-difficulty.mjs # the major stage is very hard to reach: odds by skill, what a BFA in musical theater adds, agents
 node tests/child-stage.mjs     # the child stage path: lessons from 6, children's parts up to the major stage, children against children, the work permit, a theater childhood counted at 18
 node tests/fame.mjs            # the fame profile, the entertainment world, acting from audition to credit, press, awards once, eras, child performers (see docs/FAME.md)
@@ -927,6 +928,7 @@ the Digital World because the game has no separate hobby-project system.
 | First names and surnames for each country (people are named from where they live) | `js/data/names.js` |
 | Child acting: ages, levels, pay, and the head start it gives an adult actor | `child_actor` in `js/data/careers.js` |
 | Children's parts on stage: how often, how strong the other children are, a child's hours | `CHILD_PARTS` in `js/data/fame.js` |
+| Dance gigs, the TV dance competition, dance competitions | `js/data/dance.js` |
 | Prison events | `js/data/events/prison.js` |
 | Gift tiers, rings, wedding sizes, fees | top of `js/engine/relationships.js`, `romance.js`, `children.js` |
 | Romance and family events | `js/data/events/romance.js`, `family.js` |

@@ -21,6 +21,7 @@
 //   achievements                         career milestones earned (engine/careerRecord.js)
 import { rng } from '../rng.js';
 import { workHours, contractLines, markContractsPaid } from './entertainment.js';
+import { danceHours, danceLines, markDancePaid } from './dance.js';
 import { dealLines, markDealsPaid } from './press.js';
 import { musicLines, markMusicPaid, tourWeeks } from './music.js';
 import { bookLines, markBooksPaid, published } from './publishing.js';
@@ -116,6 +117,8 @@ export function weeklyLoad(p = player(), age = p.age) {
   for (const b of (p.businesses ?? []).filter((x) => x.status === 'open' && x.ownerHours > 0)) rows.push({ label: `Running ${b.name}`, hours: b.ownerHours, kind: 'business' });
   const stage = workHours(store.state.year - (p.age - age), p); // productions signed for (engine/entertainment.js)
   if (stage) rows.push({ label: 'Productions you are in', hours: stage, kind: 'freelance' });
+  const dancing = danceHours(p, store.state.year - (p.age - age)); // dance gigs booked (engine/dance.js)
+  if (dancing) rows.push({ label: 'Dance work', hours: dancing, kind: 'freelance' });
   // Idol training, or a group's schedule (engine/kpop.js).
   if (store.state.kpop && p.idol && !p.idol.hiatus && (age === p.age)) { if (idolTrainee(p)) rows.push({ label: 'Idol training', hours: 40, kind: 'freelance' }); else if (idolGroup(p)) rows.push({ label: 'Group schedule', hours: 45, kind: 'freelance' }); }
   if (store.state.kpop && p.idol?.variety && age === p.age) for (const sh of varietyShows(p)) rows.push({ label: sh.name, hours: sh.role === 'host' ? 14 : 10, kind: 'freelance' });
@@ -408,7 +411,7 @@ export function payLines(p = player()) {
   for (const k of c.freelance.contracts) if (k.status === 'done' && !k.paid) lines.push({ source: `gig:${k.id}`, label: `${k.serviceName} for ${k.client}`, gross: k.fee });
   for (const k of c.freelance.contracts) if (k.status === 'failed' && !k.paid && k.partial) lines.push({ source: `gig:${k.id}`, label: `Part payment: ${k.serviceName}`, gross: k.partial });
   lines.push(...payouts(p)); // what the player's businesses paid out to their owner
-  lines.push(...contractLines(p), ...dealLines(p), ...musicLines(p), ...bookLines(p), ...comebackLines(p), ...idolLines(p)); // performance contracts and brand deals, each year once
+  lines.push(...contractLines(p), ...danceLines(p), ...dealLines(p), ...musicLines(p), ...bookLines(p), ...comebackLines(p), ...idolLines(p)); // performance contracts and brand deals, each year once
   if (c.pensionDrawn && c.pensionPerYear) lines.push({ source: 'pension', label: 'Pension', gross: c.pensionPerYear });
   if (c.benefit?.yearsLeft > 0 && !car) lines.push({ source: 'benefit', label: 'Unemployment benefit', gross: c.benefit.amount });
   if (p.flags.statePension) lines.push({ source: 'state', label: 'State pension', gross: p.flags.statePension }); // engine/retirement.js
@@ -428,6 +431,7 @@ export function runPayroll(p = player()) {
   for (const k of c.freelance.contracts) if (['done', 'failed'].includes(k.status)) k.paid = true;
   markPaid(p);
   markContractsPaid(p);
+  markDancePaid(p);
   markDealsPaid(p);
   markMusicPaid(p);
   markBooksPaid(p);

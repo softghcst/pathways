@@ -768,7 +768,8 @@ export function admissionChance(progId, subjectId) {
     const gpa = entryGpa();
     if (gpa < m.minGpa) return 0;
     if (m.audition) {
-      return clamp(m.auditionBase + (tripleThreat(p) - 50) / 100 * 1.1 + (p.flags.directorRec ? 0.2 : 0), 0.03, 0.97);
+      const shown = m.auditionSkill ? Number(resolve(m.auditionSkill)) || 0 : tripleThreat(p); // dance majors are judged on dancing
+      return clamp(m.auditionBase + (shown - 50) / 100 * 1.1 + (p.flags.directorRec ? 0.2 : 0), 0.03, 0.97);
     }
     const backing = (p.flags.teacherRec ? 0.12 : 0) + (p.flags.gapVolunteer ? 0.08 : 0) + (isTransfer() ? 0.1 : 0);
     return clamp(0.45 + (gpa - m.minGpa) * 0.45 + (iq - 50) / 200 - m.difficulty * 0.2 + backing, 0.05, 0.97);

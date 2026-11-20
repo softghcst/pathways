@@ -22,7 +22,7 @@ import { MAJOR_BY_ID } from '../data/majors.js';
 import { CAREERS } from '../data/careers.js';
 import { OCCUPATIONS } from '../data/traits.js';
 import { assess, meets, aid as aidFor, outlook } from './admissions.js';
-import { tripleThreat } from './conditions.js';
+import { tripleThreat, resolve } from './conditions.js';
 import { wealthTier } from './living.js';
 import * as edu from './education.js';
 import { arriveAt } from './edlegacy.js';
@@ -121,7 +121,7 @@ export function profile(majorId, inst = null) {
     access: universityAccess(), // Historical Eras: how many students universities took in these years
     mark: school ? e.gpa : edu.entryGpa(), predicted: school, advanced, recs, activities,
     statement: plan?.statementValue ?? 0,
-    audition: major?.audition ? Math.round(clamp(tripleThreat(p) + (p.flags.directorRec ? 8 : 0) + Math.min(10, (p.flags.performances?.length ?? 0) * 2))) : null,
+    audition: major?.audition ? Math.round(clamp((major.auditionSkill ? Number(resolve(major.auditionSkill)) || 0 : tripleThreat(p)) + (p.flags.directorRec ? 8 : 0) + Math.min(10, (p.flags.performances?.length ?? 0) * 2))) : null,
     // A university that offered an athletic scholarship (engine/sportsLife.js) backs the application, and pays what it offered.
     athlete: !!sportOffer(p, inst) || (!!p.flags.athlete?.recruited && !p.flags.athlete.recruited.instId) || (!!p.flags.coachRec && p.talents.sports >= 65),
     athleticFraction: sportOffer(p, inst)?.fraction,
