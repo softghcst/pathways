@@ -129,6 +129,25 @@ export const OUTLET_WORDS = ['Herald', 'Gazette', 'Screen Weekly', 'Stage Door',
 
 /** Words for fictional titles: "{A} {B}", "The {B} of {C}", and others. Original, invented combinations. */
 /**
+ * How hard the stage is. Broadway, the West End and the rest are among the hardest jobs in the arts to get: open calls
+ * draw hundreds, and the people cast have usually done it before, elsewhere.
+ *   bar        how much stronger the best of the other auditioners is, by tier, for plays and musicals
+ *   crowd      how many more of them turn up (a multiple of the tier's field), by tier
+ *   training   what a degree shows in the audition room (points), and to a company hiring for its season (odds):
+ *              conservatory training (a BFA) shows; a broad degree with performance classes (a BA) a little
+ *   company    a major-stage company hiring for its season (data/careers.js mt_performer): the bar it judges
+ *              auditions against (55 elsewhere), the extra crowd, and the credits it wants unless you have an agent
+ *   agents     what agents see in training: a BFA, and a showcase they were invited to
+ */
+export const STAGE_BAR = {
+  bar: { touring: 3, major_stage: 12 },
+  crowd: { major_stage: 1.5 },
+  training: { bfa: { audition: 5, company: 0.12 }, ba: { audition: 2, company: 0.05 } },
+  company: { need: 78, crowd: 0.2, credits: 2 },
+  agents: { bfa: 10, ba: 4, showcase: 6 },
+};
+
+/**
  * The real theater districts where a country's major-stage theaters stand: places, named as places. The theaters in
  * them keep invented names (ORG_NAMES); no real theater, show, award or logo is used. `on` is how a line reads
  * ("on Broadway", "in the West End"). A country with none here gets "the major stage" in its biggest city.

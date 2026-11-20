@@ -22,6 +22,8 @@ import { career as careerState, canFit, benefits } from './worklife.js';
 import { takeSide } from './sideJobs.js';
 import { residency } from './citizenship.js';
 import { hiringClimate } from './economy.js';
+import { stageTierOf, stageTraining, proCredits, workOf, districtOf } from './entertainment.js';
+import { STAGE_BAR } from '../data/fame.js';
 
 const result = (ok, text, tone = ok ? 'good' : 'bad') => ({ ok, text, tone });
 const yrs = (n) => `${n} ${n === 1 ? 'year' : 'years'}`;
@@ -92,6 +94,12 @@ export function postingView(id) {
   if (!isOpen(post)) reasons.push('This opening has closed.');
   if (yearActs().applied[id]) reasons.push('You have already applied this year.');
   if (!residency(p).workAuthorized && post.countryId === p.countryId && !post.partTime) reasons.push('Your visa does not allow full-time work.');
+  // A company on the major stage (Broadway, the West End…) casts its season from performers who have done it elsewhere, or through agents.
+  const bigStage = car.id === 'mt_performer' && stageTierOf(e.id) === 'major_stage';
+  if (bigStage && proCredits(p) < STAGE_BAR.company.credits && !workOf(p).agent) {
+    const d = districtOf({ tier: 'major_stage', countryId: e.countryId, city: e.city });
+    reasons.push(`Companies ${d?.on ?? 'on the major stage'} cast performers with ${STAGE_BAR.company.credits} professional stage credits, or through an agent.`);
+  }
   const have = experienceFor(car.id);
   const want = yearsExpected(car, post.level);
   const stretch = Math.max(0, want - have);
@@ -161,9 +169,12 @@ export function decide(id, answers = [], o = {}) {
   if (car.hire === 'audition') {
     const pieces = AUDITION_PIECES[car.skill] ?? AUDITION_PIECES['talents.acting'];
     const piece = pieces[answers[0] ?? 0];
-    const need = car.req.stats?.[car.skill] ?? 50;
+    // A major-stage company judges against a far higher bar, before a far bigger crowd; stage training shows (STAGE_BAR).
+    const bigStage = car.id === 'mt_performer' && stageTierOf(e.id) === 'major_stage';
+    const need = bigStage ? STAGE_BAR.company.need : car.req.stats?.[car.skill] ?? 50;
+    const trained = car.id === 'mt_performer' ? STAGE_BAR.training[stageTraining(p)]?.company ?? 0 : 0;
     score = clamp(0.5 + ((Number(resolve(piece.path)) || 0) - need) / 60, 0, 1);
-    chance = clamp(0.3 + ((Number(resolve(piece.path)) || 0) - need) / 45 + piece.edge + bonus - stretch - crowd, 0.03, 0.95);
+    chance = clamp(0.3 + ((Number(resolve(piece.path)) || 0) - need) / 45 + piece.edge + bonus + trained - stretch - crowd - (bigStage ? STAGE_BAR.company.crowd : 0), 0.03, 0.95);
     how = `You chose ${piece.t.toLowerCase()}.`;
   } else if (car.hire === 'portfolio') {
     score = clamp((Number(resolve(car.skill)) || 50) / 100, 0, 1);

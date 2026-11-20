@@ -11,10 +11,10 @@
 import { rng } from '../rng.js';
 import { clamp, fmtMoney, localWage, uid } from '../util.js';
 import { store, player, country, livingNpcs, log, milestone } from '../state.js';
-import { BRANDS, AGENT_COMMISSION, PUBLICIST_FEE, ACCURACY } from '../data/fame.js';
+import { BRANDS, AGENT_COMMISSION, PUBLICIST_FEE, ACCURACY, STAGE_BAR } from '../data/fame.js';
 import { ensureTerms, look, offered, clearOffer, triesLeft, askLowerCut } from './agents.js';
 import { fameOf, gain, regard, recognitionIn, exists } from './fame.js';
-import { ent, org, orgsOf, production, workOf, proCredits, playerSkill, article, pool } from './entertainment.js';
+import { ent, org, orgsOf, production, workOf, proCredits, playerSkill, article, pool, stageTraining } from './entertainment.js';
 import { makeNpc } from './npcFactory.js';
 import { canFit } from './worklife.js';
 
@@ -26,7 +26,9 @@ const pr = (p = player()) => { const f = workOf(p); f.publicist ??= null; f.offe
 // ---------- Representation ----------
 
 /** What an agent sees in someone: their record, their skill, and who knows them. */
-export const standing = (p = player()) => Math.round(proCredits(p) * 6 + Math.max(playerSkill({ 'talents.acting': 1 }), playerSkill({ 'talents.singing': 0.5, 'talents.dance': 0.5 })) / 3 + recognitionIn(p.countryId, p) / 2 + fameOf(p).credibility / 4);
+// Agents come to the showcases of the conservatories, and take training into account (STAGE_BAR.agents).
+const trainingSeen = (p) => (STAGE_BAR.agents[stageTraining(p)] ?? 0) + (['original', 'classic'].includes(p.flags.showcase) ? STAGE_BAR.agents.showcase : 0);
+export const standing = (p = player()) => Math.round(trainingSeen(p) + proCredits(p) * 6 + Math.max(playerSkill({ 'talents.acting': 1 }), playerSkill({ 'talents.singing': 0.5, 'talents.dance': 0.5 })) / 3 + recognitionIn(p.countryId, p) / 2 + fameOf(p).credibility / 4);
 
 /** Agents who would take the player on now. */
 export function agentsWilling(p = player()) {

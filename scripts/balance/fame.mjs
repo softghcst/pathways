@@ -25,7 +25,7 @@ const LEVELS = { ordinary: 66, good: 78, great: 90 };
 const PLACES = ['us', 'uk', 'de', 'br', 'jp', 'ng'];
 
 // A keen player practices their craft every year; a talented one has practiced since childhood.
-const PRACTICE = { acting: ['acting', 'acting', 'singing'], music: ['writing', 'singing', 'music_theory'], modeling: ['dance', 'yoga', 'dance'], books: ['writing', 'writing', 'writing'] };
+const PRACTICE = { acting: ['acting', 'acting', 'singing'], theater: ['singing', 'dance', 'acting'], music: ['writing', 'singing', 'music_theory'], modeling: ['dance', 'yoga', 'dance'], books: ['writing', 'writing', 'writing'] };
 const FIELDS = {
   acting: {
     audience: 'film',
@@ -37,6 +37,22 @@ const FIELDS = {
       }
       if (!ent.workOf(p).agent && press.agentTriesLeft() > 0) { press.findAgent(); const a = press.agentOnOffer(); if (a) press.signAgent(a.id); }
       for (const w of ent.activeWork(p)) ent.onSet(w.id, 'director');
+    },
+  },
+  // Theater only: plays and musicals, from community shows up; the major stage is Broadway, the West End and the rest.
+  theater: {
+    audience: 'theater',
+    setup(p, t) {
+      p.talents.acting = t; p.talents.singing = t; p.talents.dance = t; p.stats.charm = t - 10;
+      // BFA=1: every performer has a conservatory degree in musical theater, and gave a good showcase.
+      if (process.env.BFA) { p.education.degrees.push({ type: 'university', majorId: 'musical_theater_bfa', gpa: 3.4, age: 22 }); p.flags.showcase = 'classic'; }
+    },
+    year(p) {
+      for (const x of ent.castingBoard(p).filter((z) => !z.why && !z.applied && ['stage', 'musical'].includes(z.production.kind) && z.role.kind !== 'child').slice(0, 5)) {
+        const r = ent.audition(x.production.id, x.role.idx, 'study', x.role.approach);
+        if (r.contract) ent.sign(r.contract.id);
+      }
+      if (!ent.workOf(p).agent && press.agentTriesLeft() > 0) { press.findAgent(); const a = press.agentOnOffer(); if (a) press.signAgent(a.id); }
     },
   },
   music: {
@@ -79,9 +95,9 @@ const FIELDS = {
 };
 
 const out = [];
-for (const [field, F] of Object.entries(FIELDS)) {
+for (const [field, F] of Object.entries(FIELDS).filter(([k]) => !process.env.FIELDS || process.env.FIELDS.split(',').includes(k))) {
   for (const [level, t] of Object.entries(LEVELS)) {
-    const R = { legacy: [], peak: [], aud: [], earn: [], national: 0, intl: 0, size: [], fameAt5: [], fameEnd: [] };
+    const R = { legacy: [], peak: [], aud: [], earn: [], national: 0, intl: 0, size: [], fameAt5: [], fameEnd: [], major: 0, majorYear: [] };
     for (let i = 0; i < LIVES; i++) {
       const cid = PLACES[i % PLACES.length];
       do { store.state = createLife({ countryId: cid }); } while (store.state.player.royal);
@@ -98,7 +114,9 @@ for (const [field, F] of Object.entries(FIELDS)) {
         store.state.pendingEvents = []; p.legal.pending = null; p.legal.incarceration = null; p.stats.health = Math.max(p.stats.health, 80);
         peak = Math.max(peak, p.hidden.fame ?? 0);
         if (y === 4) R.fameAt5.push(p.hidden.fame ?? 0);
+        if (!R.seenMajor && ent.workOf(p).credits.some((c) => ent.production(c.productionId)?.tier === 'major_stage')) { R.seenMajor = true; R.major += 1; R.majorYear.push(y + 1); if (process.env.SHOW) { const c = ent.workOf(p).credits.map((c) => [ent.production(c.productionId), c.idx]).find(([x]) => x?.tier === 'major_stage'); console.log(`  ${field}/${level} year ${y + 1}: triple threat ${Math.round((p.talents.singing + p.talents.dance + p.talents.acting) / 3)}, ${c[0].cast[c[1]]?.kind} in a ${c[0].kind}, credits ${ent.proCredits(p)}, agent ${!!ent.workOf(p).agent}`); } }
       }
+      R.seenMajor = false;
       const f = fame.fameOf(p);
       R.peak.push(peak);
       R.fameEnd.push(p.hidden.fame ?? 0);
@@ -112,7 +130,7 @@ for (const [field, F] of Object.entries(FIELDS)) {
     }
     const avg = (a) => (a.length ? Math.round(a.reduce((s, x) => s + x, 0) / a.length * 10) / 10 : 0);
     const med = (a) => { const b = [...a].sort((x, y) => x - y); return b.length ? Math.round(b[Math.floor(b.length / 2)] * 100) / 100 : 0; };
-    out.push({ field, level, peakFame: avg(R.peak), fameAfter5: avg(R.fameAt5), fameAtEnd: avg(R.fameEnd), audience: avg(R.aud), legacy: avg(R.legacy), earnX: med(R.earn), national: `${R.national}/${LIVES}`, intl: `${R.intl}/${LIVES}`, saveKB: Math.round(Math.max(...R.size)) });
+    out.push({ field, level, peakFame: avg(R.peak), fameAfter5: avg(R.fameAt5), fameAtEnd: avg(R.fameEnd), audience: avg(R.aud), legacy: avg(R.legacy), earnX: med(R.earn), national: `${R.national}/${LIVES}`, majorStage: `${R.major}/${LIVES}${R.majorYear.length ? ` (yr ${avg(R.majorYear)})` : ''}`, intl: `${R.intl}/${LIVES}`, saveKB: Math.round(Math.max(...R.size)) });
   }
 }
 console.table(out);

@@ -24,7 +24,7 @@ import { rng } from '../rng.js';
 import { clamp, fmtMoney, localWage, uid } from '../util.js';
 import { store, player, country, log, milestone } from '../state.js';
 import { COUNTRIES, COUNTRY_LIST } from '../data/countries.js';
-import { PRODUCTION_KINDS, TIERS, ROLE_KINDS, ROLES_FOR, SKILLS_FOR, CHILD_PARTS, THEATER_DISTRICTS, TITLE_NODS, ORG_NAMES, ORG_WORDS, OUTLET_WORDS, TITLE_PARTS, GENRES, CHARACTER_WORDS,
+import { PRODUCTION_KINDS, TIERS, ROLE_KINDS, ROLES_FOR, SKILLS_FOR, CHILD_PARTS, THEATER_DISTRICTS, TITLE_NODS, STAGE_BAR, ORG_NAMES, ORG_WORDS, OUTLET_WORDS, TITLE_PARTS, GENRES, CHARACTER_WORDS,
   CHILD_TRUST_SHARE } from '../data/fame.js';
 import { makeNpc } from './npcFactory.js';
 import { resolve, remember } from './conditions.js';
@@ -176,6 +176,18 @@ const titleOnce = () => {
   const t = TITLE_PARTS;
   return r < 0.4 ? `${rng.pick(t.a)} ${rng.pick(t.b)}` : r < 0.7 ? `The ${rng.pick(t.b)} of ${rng.pick(t.c)}` : r < 0.85 ? `${rng.pick(t.b)} at ${rng.pick(t.c)}` : `The ${rng.pick(t.a)} ${rng.pick(t.b)}`;
 };
+
+/** Stage training: 'bfa' for a conservatory degree in musical theater (or dance), 'ba' for a broad one, else null. */
+export function stageTraining(p = player()) {
+  const ids = p.education.degrees.map((d) => d.majorId);
+  if (ids.some((m) => /_bfa$/.test(m ?? '') && /musical_theater|dance/.test(m))) return 'bfa';
+  if (ids.some((m) => ['musical_theater', 'dance', 'theater'].includes(m))) return 'ba';
+  return null;
+}
+/** The stage tier of a company that hires performers (an employer of engine/employers.js), if it is a theater. */
+export function stageTierOf(employerId) {
+  return Object.values(ent().orgs).find((o) => o.employerId === employerId && o.kind === 'theater')?.tier ?? null;
+}
 
 /** The theater district a production plays in, if it is on the major stage in a country that has one: { name, city, on }. */
 export function districtOf(prod) {
@@ -372,9 +384,14 @@ export function audition(productionId, idx, prep = 'study', approach = 'restrain
   const craft = skill + { none: -4, study: 1, coach: 4 }[prep] + fit;
   // What helps around it: a record, a reputation, an agent, a known face for a lead. Each a little.
   const star = ['lead', 'voice_lead'].includes(r.kind) ? recognitionIn(p.countryId, p) / 20 : 0;
-  const mine = craft + Math.min(6, proCredits(p) * 1.5) + fameOf(p).credibility / 20 + (f.agent ? 2 * (f.agent.clout ?? 1) : 0) + star + rng.around(0, 8);
-  // The field: other people go for every part, from the same pool of working actors; bigger parts draw stronger fields.
-  const field = Math.max(1, Math.round(tier.field * ROLE_KINDS[r.kind].field));
+  // On stage, training shows in the room: a conservatory degree more than a broad one (STAGE_BAR).
+  const stage = ['stage', 'musical'].includes(prod.kind);
+  const trained = stage ? STAGE_BAR.training[stageTraining(p)]?.audition ?? 0 : 0;
+  const mine = craft + trained + Math.min(6, proCredits(p) * 1.5) + fameOf(p).credibility / 20 + (f.agent ? 2 * (f.agent.clout ?? 1) : 0) + star + rng.around(0, 8);
+  // The field: other people go for every part, from the same pool of working actors; bigger parts draw stronger fields,
+  // and the biggest stages draw the most, and the best, of all (STAGE_BAR).
+  const field = Math.max(1, Math.round(tier.field * ROLE_KINDS[r.kind].field * (stage && r.kind !== 'child' ? STAGE_BAR.crowd[prod.tier] ?? 1 : 1)));
+  const bar = stage && r.kind !== 'child' ? STAGE_BAR.bar[prod.tier] ?? 0 : 0;
   let best = 0;
   // Who turns up depends on the size of the job: the best-known actors go for the biggest parts.
   const ranked = [...pool(prod.countryId)].sort((x, y) => npcSkill(y, SKILLS_FOR[prod.kind]) - npcSkill(x, SKILLS_FOR[prod.kind]));
@@ -384,7 +401,7 @@ export function audition(productionId, idx, prep = 'study', approach = 'restrain
     // A child's part is contested by other children, not by the working actors.
     if (r.kind === 'child') { best = Math.max(best, rng.around(CHILD_PARTS.field[prod.tier] ?? 44, CHILD_PARTS.spread)); continue; }
     const n = rng.pick(others);
-    best = Math.max(best, npcSkill(n, SKILLS_FOR[prod.kind]) + rng.around(0, 8) + TIERS[prod.tier].reach * 6 + Math.min(6, (n.flags.star.credits?.length ?? 0) * 1.5) + (['lead', 'voice_lead'].includes(r.kind) ? n.flags.star.fame / 20 : 0));
+    best = Math.max(best, bar + npcSkill(n, SKILLS_FOR[prod.kind]) + rng.around(0, 8) + TIERS[prod.tier].reach * 6 + Math.min(6, (n.flags.star.credits?.length ?? 0) * 1.5) + (['lead', 'voice_lead'].includes(r.kind) ? n.flags.star.fame / 20 : 0));
   }
   // Community and student work takes almost anyone who turns up and can do it.
   if (['community', 'student'].includes(prod.tier)) best = Math.min(best, 35 + rng.int(0, 15));
