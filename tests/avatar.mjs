@@ -113,7 +113,11 @@ for (const [label, saved] of Object.entries(cases)) {
 }
 const fromV2 = normalize(v2, 'x');
 check(fromV2.inherited.skin === 'umber' && fromV2.inherited.eyeColor === 'green' && fromV2.style.hairDye === 'teal' && fromV2.inherited.head === 'head_12_sculpted'
-  && fromV2.style.glasses && fromV2.style.facialHair && fromV2.inherited.marks.join() === 'freckles', 'v2 save lost colors, dye, face shape or accessories');
+  && fromV2.style.glasses && fromV2.inherited.marks.join() === 'freckles', 'v2 save lost colors, dye, face shape or accessories');
+// Facial hair has been taken out of the game: a beard in an old save is dropped, and no one is drawn with one.
+check(!('facialHair' in fromV2.style) && !('facialHair' in normalize({ v: 3, inherited: {}, style: { facialHair: 'facial_hair_04_bushy_full_beard' } }, 'y').style), 'an old save still has facial hair');
+check(!CATALOG.facialHair && !STYLE_KEYS.includes('facialHair') && !AVATAR_MANIFEST.facial_hair, 'facial hair can still be chosen');
+for (let i = 0; i < 200; i++) check(!('facialHair' in randomAppearance(0.5, 'male').style), 'a new man is given facial hair');
 // Two relatives who shared an old nose still share one.
 check(normalize({ ...v2 }, 'a').inherited.nose === normalize({ ...v2 }, 'b').inherited.nose, 'old shared nose no longer shared');
 // Old saves keep the faces they always had (taken from the code before shapes were withdrawn, then moved off withdrawn ones).
@@ -331,11 +335,11 @@ check(CATALOG.lips.some((l) => l.id === 'lips_21') && PART_BY_ID[CUR.EXPRESSION.
   check(avatarSvg({ appearance: fresh, seed: 'f', age: 30 }).replace(/pw-[a-z]+-\d+/g, '') === avatarSvg({ appearance: again, seed: 'f', age: 30 }).replace(/pw-[a-z]+-\d+/g, ''), 'a saved copy of a face is drawn differently');
 }
 
-// 12. Layers: the mouth over a beard, lines of age kept on the face, front hair cut at the chin.
+// 12. Layers: lines of age kept on the face, front hair cut at the chin; an old beard is not drawn.
 {
   const look = resolveLook({ v: 3, inherited: { head: 'head_13_athletic', skin: 'golden' }, style: { hair: 'hair_girl_long_04', facialHair: 'facial_hair_04_bushy_full_beard' } }, 'layers', 'male');
   const svg = characterAvatarSvg(look, { age: 70, gender: 'male' });
-  check(svg.indexOf(PART_BY_ID[look.lips].file) > svg.indexOf('facial_hair_04_bushy_full_beard'), 'a beard is drawn over the mouth');
+  check(!/facial_hair/.test(svg), 'a beard from an old save is drawn');
   check(/<g clip-path="url\(#pw-face-\d+\)"><use href="[^"]*aging/.test(svg), 'lines of age are not kept to the face');
   const cut = Number(svg.match(/<clipPath id="pw-front-\d+"><rect x="-400" y="-2000" width="1312" height="(\d+)"/)[1]) - 2000;
   const f = hairFit('hair_girl_long_04', 'head_13_athletic');

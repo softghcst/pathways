@@ -328,18 +328,6 @@ export const AVATAR_MANIFEST = {
     {"id": "jewelry_11_moon_choker", "file": "avatars/jewelry/jewelry_11_moon_choker.svg", "label": "Moon choker", "tags": {"kind": "necklace"}},
     {"id": "jewelry_12_gold_chain", "file": "avatars/jewelry/jewelry_12_gold_chain.svg", "label": "Gold chain", "tags": {"kind": "necklace"}},
   ],
-  facial_hair: [
-    {"id": "facial_hair_01_shaped_beard", "file": "avatars/facial_hair/facial_hair_01_shaped_beard.svg", "label": "Shaped beard"},
-    {"id": "facial_hair_02_handlebar_mustache", "file": "avatars/facial_hair/facial_hair_02_handlebar_mustache.svg", "label": "Handlebar mustache"},
-    {"id": "facial_hair_03_pointed_goatee", "file": "avatars/facial_hair/facial_hair_03_pointed_goatee.svg", "label": "Pointed goatee"},
-    {"id": "facial_hair_04_bushy_full_beard", "file": "avatars/facial_hair/facial_hair_04_bushy_full_beard.svg", "label": "Bushy full beard"},
-    {"id": "facial_hair_05_chinstrap_beard", "file": "avatars/facial_hair/facial_hair_05_chinstrap_beard.svg", "label": "Chinstrap beard"},
-    {"id": "facial_hair_06_stubble", "file": "avatars/facial_hair/facial_hair_06_stubble.svg", "label": "Stubble"},
-    {"id": "facial_hair_07_chevron", "file": "avatars/facial_hair/facial_hair_07_chevron.svg", "label": "Chevron"},
-    {"id": "facial_hair_08_vandyke", "file": "avatars/facial_hair/facial_hair_08_vandyke.svg", "label": "Vandyke"},
-    {"id": "facial_hair_09_muttonchops", "file": "avatars/facial_hair/facial_hair_09_muttonchops.svg", "label": "Muttonchops"},
-    {"id": "facial_hair_10_soulpatch", "file": "avatars/facial_hair/facial_hair_10_soulpatch.svg", "label": "Soulpatch"},
-  ],
   makeup: [
     {"id": "makeup_01_soft_blush", "file": "avatars/makeup/makeup_01_soft_blush.svg", "label": "Soft blush"},
     {"id": "makeup_02_winged_eyeliner", "file": "avatars/makeup/makeup_02_winged_eyeliner.svg", "label": "Winged eyeliner"},

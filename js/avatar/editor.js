@@ -14,7 +14,7 @@ const esc = (s) => String(s).replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '
 
 // Zoomed views for option thumbnails, in the 512 frame.
 const ZOOM = { eyes: '146 214 220 160', brows: '146 196 220 140', nose: '196 290 120 110', lips: '186 336 140 100', glasses: '126 214 260 170',
-  makeup: '126 206 260 230', marks: '126 206 260 230', facialHair: '116 250 280 260', jewelry: '70 220 372 330', outfit: '20 360 472 220', hat: '40 -10 432 380' };
+  makeup: '126 206 260 230', marks: '126 206 260 230', jewelry: '70 220 372 330', outfit: '20 360 472 220', hat: '40 -10 432 380' };
 
 // kind: 'thumb' draws a small portrait for each option; 'swatch' a color dot; 'chip' a word.
 // half: which half of the appearance the key lives in. none: the control has a "none" option.
@@ -39,7 +39,6 @@ const CONTROLS = {
   glasses: { label: 'Glasses', half: 'style', kind: 'thumb', none: 'None' },
   jewelry: { label: 'Jewelry', half: 'style', kind: 'thumb', multi: true, minAge: 8 },
   makeup: { label: 'Make-up', half: 'style', kind: 'thumb', none: 'None', minAge: 13 },
-  facialHair: { label: 'Facial hair', half: 'style', kind: 'thumb', none: 'None', minAge: 16 },
 };
 
 const TABS = [
@@ -48,7 +47,7 @@ const TABS = [
   { id: 'features', name: 'Nose and mouth', keys: ['nose', 'lips', 'lipColor'], tweaks: ['noseSize', 'lipSize'] },
   { id: 'hair', name: 'Hair', keys: ['hair', 'hairDye', 'hairColor', 'hairTexture'] },
   { id: 'style', name: 'Clothes', keys: ['outfit', 'outfitColor'] },
-  { id: 'extras', name: 'Extras', keys: ['glasses', 'jewelry', 'makeup', 'facialHair'] },
+  { id: 'extras', name: 'Extras', keys: ['glasses', 'jewelry', 'makeup'] },
 ];
 const HAIR_FILTERS = [['suits', 'Suits my hair'], ['short', 'Short'], ['medium', 'Medium'], ['long', 'Long'], ['updo', 'Up'], ['all', 'All']];
 const PREVIEWS = [['now', 'Now'], [1, 'Baby'], [9, 'Child'], [72, 'At 72']];

@@ -46,7 +46,7 @@ export function defaultStyle(inherited, gender) {
     : gender === 'male' ? suited.filter((s) => s.tags.gender === 'male' && (longOk || s.tags.length !== 'long')) : suited;
   const hairPool = leaning.length && rng.chance(0.88) ? leaning : suited;
   const wardrobe = [...OUTFITS.any, ...(gender === 'female' ? OUTFITS.female : gender === 'male' ? OUTFITS.male : [])];
-  return { hair: rng.pick(hairPool.length ? hairPool : HAIR_STYLES).id, hairDye: null, glasses: null, facialHair: null, makeup: null, lipColor: null,
+  return { hair: rng.pick(hairPool.length ? hairPool : HAIR_STYLES).id, hairDye: null, glasses: null, makeup: null, lipColor: null,
     jewelry: [], outfit: rng.pick(wardrobe), outfitColor: null, hat: null };
 }
 
@@ -57,7 +57,9 @@ export function randomAppearance(skinDepthHint, gender) {
   if (gender === 'male') inherited.lips = rng.pick(CATALOG.lips.filter((x) => RESTING.lipsMasc.includes(x.id))).id;
   const style = defaultStyle(inherited, gender);
   if (rng.chance(0.14)) style.glasses = rng.pick(CATALOG.glasses.filter((g) => !/star|visor/.test(g.id))).id;
-  if (gender === 'male' && rng.chance(0.3)) style.facialHair = rng.pick(CATALOG.facialHair).id;
+  // Facial hair has been taken out of the game. The roll that used to choose a man's beard is still made, and its result
+  // ignored, so everyone else generated from the same random numbers turns out as before.
+  if (gender === 'male' && rng.chance(0.3)) rng.pick([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
   if (gender === 'female' && rng.chance(0.35)) style.jewelry = [rng.pick(CATALOG.jewelry.filter((j) => j.tags.kind === 'ears')).id];
   return { v: 3, inherited, style };
 }
@@ -92,7 +94,7 @@ export function inheritAppearance(a, b) {
     const n = (pa.marks?.includes(id) ? 1 : 0) + (pb.marks?.includes(id) ? 1 : 0);
     return rng.chance(n === 2 ? 0.8 : n === 1 ? 0.5 : 0.03);
   });
-  return { v: 3, inherited: g, style: { hair: null, hairDye: null, glasses: null, facialHair: null, makeup: null, lipColor: null, jewelry: [], outfit: null, outfitColor: null, hat: null } };
+  return { v: 3, inherited: g, style: { hair: null, hairDye: null, glasses: null, makeup: null, lipColor: null, jewelry: [], outfit: null, outfitColor: null, hat: null } };
 }
 
 /** Gives a newly made character a haircut and clothes if they have none yet. Changes and returns the appearance. */

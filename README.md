@@ -266,7 +266,7 @@ Python script (standard library only) keeps them tidy and lists them for the gam
 |---|---|
 | The head shapes (shared with the hair-warping pipeline) | `assets/heads/` — clean names (`pixie.svg`, `dimple_oval.svg`, …); the save ids stay `head_11_pixie` etc. (`HEAD_IDS` in the build script) |
 | Hair-warping pipeline | `assets/hair_raw/` (hairstyles drawn on the base head), `assets/hair_fitted/` (each style fitted to each head, `<style>_<head>.svg`), `assets/landmarks.json` (six landmarks per head, and `base_head`), `assets/CHATGPT_HAIR_PROMPT.md` (the prompt for new styles). New style: save ChatGPT's SVG in `assets/hair_raw/`, run `npm run fit-hair` (several at once: paste the reply into `assets/raw_batch.txt` and run `npm run split-hair`); `npm run soften-hair` turns the heavy outline inside the hair (a fringe over the cap, curls over curls) into soft lines, keeping it on the silhouette (needs `pip install -r scripts/requirements.txt`), check `scripts/debug_hair_fit.html`. The game reads `assets/hair_manifest.json` (written by the same command; loaded by `js/avatar/fittedHair.js`), so a new style appears in the creator with no code change, and draws its `hair_back` behind the head and its other layers in front (`fittedHairFile` in `js/CharacterAvatar.js`). A style whose file name contains `fade` or `buzz`, or whose SVG has `data-clip-to-head="true"`, is clipped to the head's skin |
-| The artwork, one folder per kind of part | `assets/avatars/` — `eyes/`, `eyebrows/`, `noses/`, `lips/`, `hair/`, `clothes/`, `crowns/`, `glasses/`, `jewelry/`, `facial_hair/`, `makeup/`, `aging/`, `emotions/` |
+| The artwork, one folder per kind of part | `assets/avatars/` — `eyes/`, `eyebrows/`, `noses/`, `lips/`, `hair/`, `clothes/`, `crowns/`, `glasses/`, `jewelry/`, `makeup/`, `aging/`, `emotions/` |
 | The list of every part (generated: do not edit) | `js/avatarManifest.js` |
 | Cleaning, aligning and listing the artwork | `scripts/build-avatar-manifest.py` |
 | Skin, hair, eye, lip and outfit colors | `js/avatarPalettes.js` |
@@ -280,9 +280,9 @@ Python script (standard library only) keeps them tidy and lists them for the gam
 | The salon's prices | `js/engine/salon.js` |
 
 **How a portrait is built.** Each layer is an SVG `<use>` of a part file, in this order: back hair, head, make-up
-(clipped to the head), age lines (clipped to the head too), eyes, eyebrows, nose, facial hair, mouth, clothes,
-necklaces, front hair, earrings and piercings, glasses, hat or crown, emotions. The mouth is drawn over a beard, so
-a full beard does not swallow it. Hair is drawn twice — the whole style behind the head, and the part above that
+(clipped to the head), age lines (clipped to the head too), eyes, eyebrows, nose, mouth, clothes,
+necklaces, front hair, earrings and piercings, glasses, hat or crown, emotions. There is no facial hair: it has been
+taken out of the game, and a beard or mustache in an old save is dropped. Hair is drawn twice — the whole style behind the head, and the part above that
 head's chin again in front — so a fringe falls over the forehead while long hair falls behind the shoulders. A hat hides hair above the brim (bulky styles, above the ears). Colors are CSS variables on the portrait
 (`--skin-color`, `--hair-color`, `--brow-color`, `--eye-color`, `--lip-color`, `--blush-color`, `--outfit-color`)
 that reach into the part files.
@@ -395,7 +395,7 @@ hair filtered by length or by what suits your texture, a preview at other ages, 
 appearance: {
   v: 3,
   inherited: { head, skin, eyes, eyeColor, brows, nose, lips, hairColor, hairTexture, marks: [], tweaks: {} }, // set once, at birth
-  style: { hair, hairDye, glasses, facialHair, makeup, lipColor, jewelry: [], outfit, outfitColor, hat }, // the salon and wardrobe
+  style: { hair, hairDye, glasses, makeup, lipColor, jewelry: [], outfit, outfitColor, hat }, // the salon and wardrobe
 }
 ```
 

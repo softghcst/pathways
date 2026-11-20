@@ -7,7 +7,7 @@
 //   inherited: what they were born with. Set once, at birth, never changed.
 //              head, skin, eyes, eyeColor, brows, nose, lips, hairColor (natural), hairTexture, marks[]
 //   style:     how they wear it today. Changed at the salon or in the wardrobe.
-//              hair (cut), hairDye, glasses, facialHair, makeup, lipColor, jewelry[], outfit, outfitColor, hat
+//              hair (cut), hairDye, glasses, makeup, lipColor, jewelry[], outfit, outfitColor, hat
 // Children are built from their parents' `inherited` halves only, so a
 // parent's dye, haircut or clothes never reach a child.
 //
@@ -63,7 +63,7 @@ export const CATALOG = {
   head: HEADS, skin: SKIN_TONES, eyes: parts('eyes', (p) => p.id !== EXPRESSION.crying), // crying eyes appear only when something sad is happening
   eyeColor: EYE_COLORS, brows: parts('eyebrows', (p) => p.id !== EXPRESSION.sadBrows), nose: parts('noses'), lips: parts('lips'),
   hairColor: HAIR_COLORS.filter((c) => c.natural), hairTexture: HAIR_TEXTURES, marks: MARKS,
-  hair: [...HAIR_STYLES, ...FITTED_STYLES], hairDye: HAIR_COLORS, glasses: parts('glasses'), facialHair: parts('facial_hair'),
+  hair: [...HAIR_STYLES, ...FITTED_STYLES], hairDye: HAIR_COLORS, glasses: parts('glasses'),
   makeup: parts('makeup', (p) => !MARK_FILES.has(p.id)), lipColor: LIP_COLORS, jewelry: parts('jewelry'),
   outfit: parts('clothes', (p) => !AUTO_OUTFIT.test(p.id)), outfitColor: OUTFIT_COLORS, hat: [],
 };
@@ -84,7 +84,7 @@ export const cleanTweaks = (t) => Object.fromEntries(TWEAKS.map((k) => [k.id, Ma
 /** Born with: one id each, except marks, which is a list of ids. */
 export const INHERITED_KEYS = ['head', 'skin', 'eyes', 'eyeColor', 'brows', 'nose', 'lips', 'hairColor', 'hairTexture'];
 /** Styling: hair must have a value ('bald' for none); jewelry is a list; the others may be null (none). */
-export const STYLE_KEYS = ['hair', 'hairDye', 'glasses', 'facialHair', 'makeup', 'lipColor', 'jewelry', 'outfit', 'outfitColor', 'hat'];
+export const STYLE_KEYS = ['hair', 'hairDye', 'glasses', 'makeup', 'lipColor', 'jewelry', 'outfit', 'outfitColor', 'hat'];
 /** The proportions of someone's face. */
 export const shownTweaks = (a) => ({ ...a.inherited.tweaks });
 
@@ -136,8 +136,6 @@ const OLD_HAIRSTYLE = {
   long_straight: 'hair_girl_long_02', long_wavy: 'hair_girl_long_01', long_curly: 'hair_girl_long_07', ponytail: 'hair_boy_updo_11_high_ponytail', bun: 'hair_updo_03', puffs: 'hair_updo_09',
 };
 const OLD_GLASSES = { round: 'glasses_1', square: 'glasses_3', cat_eye: 'glasses_2', aviator: 'glasses_4' };
-const OLD_BEARD = { stubble: 'facial_hair_06_stubble', mustache: 'facial_hair_02_handlebar_mustache', goatee: 'facial_hair_03_pointed_goatee',
-  beard: 'facial_hair_01_shaped_beard', full_beard: 'facial_hair_04_bushy_full_beard' };
 const OLD_MAKEUP = { soft: 'makeup_01_soft_blush', defined: 'makeup_02_winged_eyeliner', bold: 'makeup_12_smoky_wing' };
 /**
  * The random pools as they were when the earlier avatar system's saves were first converted. An old shape
@@ -199,7 +197,7 @@ export function normalize(a, seed = 'x') {
   style.hair = has('hair', st.hair) || unloadedFitted ? st.hair : oldCut ?? seeded(suited.length ? suited : HAIR_STYLES, seed, 'hair').id;
   style.hairDye = INDEX.anyHair[st.hairDye] ? st.hairDye : null;
   style.glasses = has('glasses', st.glasses) ? st.glasses : (v2 && OLD_GLASSES[st.glasses]) || null;
-  style.facialHair = has('facialHair', st.facialHair) ? st.facialHair : (v2 && OLD_BEARD[st.facialHair]) || null;
+  // Facial hair has been taken out of the game: a beard or mustache in an old save is dropped.
   style.makeup = has('makeup', st.makeup) ? st.makeup : (v2 && OLD_MAKEUP[st.makeup]) || null;
   style.lipColor = has('lipColor', st.lipColor) ? st.lipColor : null;
   style.jewelry = Array.isArray(st.jewelry) ? st.jewelry.filter((id) => has('jewelry', id)) : [];
@@ -250,7 +248,7 @@ export function resolveLook(appearance, seed = 'x', gender, { child = false } = 
   return {
     tweaks: g.tweaks, head: g.head, eyes: g.eyes, eyebrows: g.brows, nose: g.nose, lips,
     hair: st.hair === 'bald' ? null : st.hair, babyHair: seeded(babyHair, seed, 'babyhair'),
-    facialHair: st.facialHair, makeup: st.makeup ? [st.makeup] : [], marks: g.marks.map((m) => part('marks', m).file),
+    makeup: st.makeup ? [st.makeup] : [], marks: g.marks.map((m) => part('marks', m).file),
     jewelry: st.jewelry, glasses: st.glasses, clothes: st.outfit, hat: st.hat,
     babyClothes: seeded(OUTFITS.baby, seed, 'babyclothes'), royalOutfit: seeded(ROYAL.outfits[sex], seed, 'royal'),
     colors: {

@@ -9,7 +9,7 @@
 //
 // Layers, back to front:
 //   back hair, head, make-up (clipped to the head), aging, eyes, eyebrows,
-//   nose, facial hair, lips, clothes, necklaces, front hair, earrings and
+//   nose, lips, clothes, necklaces, front hair, earrings and
 //   piercings, glasses, hat or crown, emotions.
 // Hair is drawn twice: the whole style behind the head, and the part above
 // the jaw again in front, so a fringe falls over the forehead while long
@@ -23,7 +23,7 @@
 //   new CharacterAvatar(el, look, ctx)   -> mounted in `el`; .update(look, ctx) redraws
 //
 // `look` is a resolved look (see resolveLook in js/avatar/catalog.js):
-//   { head, eyes, eyebrows, nose, lips, hair, facialHair, makeup: [], jewelry: [], glasses, clothes, hat, crown, emotion,
+//   { head, eyes, eyebrows, nose, lips, hair, makeup: [], jewelry: [], glasses, clothes, hat, crown, emotion,
 //     colors: { skin, hair, brow, eye, lip, blush, outfit } }
 // `ctx` describes the moment: { age, gender, mood, jailed, royal: { rank }, career: { id, level }, label }.
 import { PART_BY_ID, AVATAR_TEMPLATE as T } from './avatarManifest.js';
@@ -94,15 +94,13 @@ export function dressFor(look, ctx = {}) {
   if (young) {
     out.hair = look.babyHair ?? null;
     out.makeup = (look.marks ?? []).filter((m) => /freckle/.test(m));
-    out.jewelry = []; out.glasses = null; out.facialHair = null; out.hat = null;
+    out.jewelry = []; out.glasses = null; out.hat = null;
     out.eyebrows = BABY_BROWS;
   } else if (stage === 'kid') {
     out.makeup = (look.marks ?? []).filter((m) => /freckle/.test(m));
     out.jewelry = out.jewelry.filter((j) => /stud/.test(j));
-    out.facialHair = null;
   } else {
     out.makeup = [...new Set([...(look.marks ?? []), ...out.makeup])];
-    if (age < 16) out.facialHair = null;
   }
   if (stage === 'older') {
     out.aging = AGING.filter(([from]) => age >= from).map(([, id]) => id);
@@ -192,7 +190,7 @@ export function fitTransforms(headId, stage, tweaks = {}, parts = {}) {
     eyes: feature(T.anchor.eyes), eyebrows: feature(T.anchor.eyebrows),
     nose: move(256, T.anchor.nose, fit.cx, at(T.anchor.nose) + nf.drop, noseS * nf.k), lips: move(256, T.anchor.lips, fit.cx, at(T.anchor.lips) + mf.dy, mouthS * mf.k),
     makeup: feature(T.anchor.cheek), aging: feature(T.anchor.cheek), emotion: feature(T.anchor.eyes),
-    glasses: feature(T.anchor.eyes, wr * young.k), facialHair: feature(T.anchor.lips, wr),
+    glasses: feature(T.anchor.eyes, wr * young.k),
     hair: crown, hat: crown,
     ears: move(256, T.ear.lobe, (fit.earL + fit.earR) / 2, fit.lobe, earS),
     clothes: move(256, T.clothesTop, fit.cx, fit.chin + 8, body), necklace: move(256, T.clothesTop, fit.cx, fit.chin + 8, body),
@@ -313,8 +311,6 @@ export function characterAvatarSvg(look, ctx = {}, opts = {}) {
     d.aging.length ? `<g clip-path="url(#pw-face-${n})">${d.aging.map((a) => use(a, `${f.aging ?? ''} opacity=".38"`)).join('')}</g>` : '',
     pair(d.eyes, f.eyesL, f.eyesR, weigh(READABLE.line)), use(d.eyebrows, `${f.eyebrows ?? ''}${rim(READABLE.edge)}`),
     use(d.nose, `${f.nose ?? ''}${deep ? ` style="--line-ink:${READABLE.noseInk};--line-width:${n1(READABLE.nose * deep)}"` : ''}`),
-    // The mouth is drawn over a beard or mustache, not under it: a full beard would otherwise swallow it.
-    d.facialHair ? use(d.facialHair, f.facialHair) : '',
     use(d.lips, `${f.lips ?? ''}${weigh(READABLE.line * 0.6)}`),
     use(d.clothes, f.clothes),
     necklaces.map((j) => use(j, f.necklace)).join(''),
@@ -362,6 +358,6 @@ export class CharacterAvatar {
 export function filesFor(look, ctx = {}) {
   const d = dressFor(look, ctx);
   const fitted = d.hair ? fittedHairFile(d.hair, d.head) : null;
-  return [...(fitted ? [`${AVATAR_BASE}${fitted}`] : []), ...[d.hair, d.head, ...d.makeup, ...d.aging, d.eyes, d.eyebrows, d.nose, d.lips, d.facialHair, d.clothes, ...d.jewelry, d.glasses, d.hat, d.crown, d.emotion]
+  return [...(fitted ? [`${AVATAR_BASE}${fitted}`] : []), ...[d.hair, d.head, ...d.makeup, ...d.aging, d.eyes, d.eyebrows, d.nose, d.lips, d.clothes, ...d.jewelry, d.glasses, d.hat, d.crown, d.emotion]
     .filter((id) => id && PART_BY_ID[id]).map((id) => `${AVATAR_BASE}${PART_BY_ID[id].file}`)];
 }
