@@ -26,7 +26,7 @@ export default [
     ]),
 
   scene('kid_tuition', 'their life',
-    '{kid} has a place at university. The fees and rent over the course come to {$24000}, and they have not asked you for anything. They are waiting to see if you offer.', [
+    '{kid} got into college. The fees and rent over the course come to {$24000}, and they have not asked you for anything. They are waiting to see if you offer.', [
       { label: 'Pay all of it', requires: [need('cashBase', '>=', 24000)], outcomes: [any(
         '{kid} will graduate owing nobody anything. They do not have the words, so they hug you instead.', 'good',
         cash(-24000), rel('kid', 14), hid('karma', 4), mem('kid', 'paidTuition', 'You paid their way through university.'))] },
@@ -37,7 +37,7 @@ export default [
     ]),
 
   scene('kid_in_a_hole', 'their life',
-    '{kid} rings late at night. They are in trouble, and it takes a while before they can say how much: they need {$5000}, and they need it this week.', [
+    '{kid} calls late at night. They are in trouble, and it takes a while before they can say how much: they need {$5000}, and they need it this week.', [
       { label: 'Send the money, no questions', requires: [need('cashBase', '>=', 5000)], outcomes: [any(
         'It is in their account within the hour. They pay you back in the only currency they have: they start ringing every Sunday.', 'good',
         cash(-5000), rel('kid', 12), mem('kid', 'bailedOut', 'When they were in real trouble, you sent the money without asking why.'))] },

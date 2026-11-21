@@ -67,7 +67,7 @@ export async function generalNight(rec) {
 /** Election night: the exit poll, then each area as it declares, then the result. */
 export async function electionNight(rec) {
   const them = esc(rec.rival);
-  await nightStep(`<div class="eyebrow">Polling day · ${rec.year}</div><h2>The polls have closed</h2>
+  await nightStep(`<div class="eyebrow">Election Day · ${rec.year}</div><h2>The polls have closed</h2>
     <p class="body">${esc(rec.title)}. The last published poll had you on ${rec.lastPoll ?? '?'}%. The exit poll, taken outside polling stations, says:</p>
     <div class="pol-night"><strong>You ${rec.exit}%</strong><span>${them} ${100 - rec.exit}%</span></div>
     <p class="muted">Exit polls have been wrong before.</p>`, 'Watch the count');
@@ -201,7 +201,7 @@ export async function runCampaign(api) {
 export function raceRows() {
   const v = camp.view();
   if (!v) return '';
-  const stage = { nomination: 'Seeking your party\'s nomination', defeated: 'The party chose someone else', plan: 'Choosing what to stand for', trail: v.when, debate: 'The debate', vote: 'Polling day' }[v.stage];
+  const stage = { nomination: 'Seeking your party\'s nomination', defeated: 'The party chose someone else', plan: 'Choosing what to stand for', trail: v.when, debate: 'The debate', vote: 'Election Day' }[v.stage];
   return `<div class="section-label">Your campaign</div>
     <div class="kv"><span>For</span><span><strong>${v.national ? 'The general election' : esc(v.office.title)}</strong></span></div>
     ${v.rival ? `<div class="kv"><span>Against</span><span>${esc(v.rival.name)}${v.rivalParty ? `, ${esc(v.rivalParty.name)}` : ''}</span></div>` : ''}

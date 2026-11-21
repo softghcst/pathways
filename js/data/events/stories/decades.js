@@ -95,7 +95,7 @@ export default [
   }),
   era({
     id: 'dec_talkies', years: [1927, 1932], ageRange: [6, 90],
-    text: 'The picture house is showing a film where the actors talk, out loud, from the screen. There is a queue round the block.',
+    text: 'The picture house is showing a film where the actors talk, out loud, from the screen. There is a line around the block.',
     choices: [
       { label: 'Queue for it', outcomes: [any('When the first line was spoken, the whole room gasped.', 'good', cash(-15), st('mood', 5), ms('Saw the first talking picture.'))] },
       { label: 'Go three times', outcomes: [any('You can recite the songs now, and do.', 'good', cash(-45), st('mood', 6), tal('acting', 2))] },

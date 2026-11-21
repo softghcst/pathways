@@ -56,7 +56,7 @@ export function admit(reason, o = {}, p = player()) {
     facilityId: f.id, doctorId: doc?.id ?? null, startWk: now(p), endWk: now(p) + weeks, status: 'in', conditionId: o.conditionId ?? null, notes: [] };
   admissions(p).push(a);
   if (doc) joinCareTeam(doc, p);
-  a.paid = charge(`adm:${a.id}`, VISIT_COST.hospitalWeek * weeks, { what: `${weeks} week${weeks === 1 ? '' : 's'} in hospital` });
+  a.paid = charge(`adm:${a.id}`, VISIT_COST.hospitalWeek * weeks, { what: `${weeks} week${weeks === 1 ? '' : 's'} in the hospital` });
   log({
     emergency: `You are admitted to ${f.name} after ${how.label}.`,
     planned: `You go into ${f.name} for ${how.label}, as planned.`,

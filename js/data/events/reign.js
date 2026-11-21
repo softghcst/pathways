@@ -98,7 +98,7 @@ export default [
     id: 'after_the_crown', category: 'royalty', ageRange: [0, 120], queuedOnly: true, cooldown: 1,
     text: 'It is over. The flag over the palace is taken down, and a polite official from the new republic explains what you may keep: your own money, your clothes, your name. The residences belong to the state. You have thirty days.',
     choices: [
-      { label: 'Stay, as an ordinary citizen', outcomes: [any('You rent a flat under your own name. For a while people stare in shops. Then, slowly, they stop.', 'neutral', flag('stayedAfterFall'), hid('willpower', 5), st('mood', 4), ms('Stayed on as a private citizen after the monarchy fell.'))] },
+      { label: 'Stay, as an ordinary citizen', outcomes: [any('You rent an apartment under your own name. For a while people stare in shops. Then, slowly, they stop.', 'neutral', flag('stayedAfterFall'), hid('willpower', 5), st('mood', 4), ms('Stayed on as a private citizen after the monarchy fell.'))] },
       { label: 'Go into exile', outcomes: [any('You leave with what fits in the cases. From the airplane window the country looks exactly as it always did.', 'bad', exile(), st('mood', -6))] },
       { label: 'Refuse to leave the palace', outcomes: [any('You stay in your rooms for nine days. On the tenth the water is turned off. You walk out through a crowd of photographers, carrying your own bag.', 'bad', st('mood', -10), hid('willpower', 3), flag('stayedAfterFall'))] },
     ],

@@ -140,7 +140,7 @@ export async function moveCity(api) {
   if (block) return messageModal({ body: block });
   const now = towns.hereCity();
   const name = await pickModal({ title: 'Move to another city',
-    body: `You live in ${now.name}${now.region && now.region !== now.name ? `, ${now.region}` : ''}: homes ${now.housingWord}, pay ${now.payWord}. Moving costs ${fmtMoney(towns.moveCost(), c)}. Your job comes too if your employer has a place for you there.`,
+    body: `You live in ${now.name}${now.region && now.region !== now.name ? `, ${now.region}` : ''}: ${now.housingWord}, ${now.payWord}. Moving costs ${fmtMoney(towns.moveCost(), c)}. Your job comes too if your employer has a place for you there.`,
     options: towns.moveOptions().map((k) => ({ value: k.name, label: k.name, sub: `${k.line}. ${k.versus}${k.ownsHome ? ' You own a home here.' : ''}${k.lawDiffers ? ' Some laws differ.' : ''}` })) });
   if (!name) return undefined;
   const sure = await confirmModal({ title: `Move to ${name}?`, body: `It costs ${fmtMoney(towns.moveCost(), c)}. Property you own stays where it is.`, yes: 'Move' });

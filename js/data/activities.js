@@ -53,15 +53,15 @@ export const NIGHTLIFE_AGE = 18;
  * gets high: being liked has diminishing returns); minAge; the rest is what else it does.
  */
 export const CHARM_ACTIVITIES = [
-  { id: 'style', label: 'Get a new look: a stylist and a new wardrobe', cost: 900, minAge: 14, charm: [2, 4], mood: 3,
+  { id: 'style', label: 'A stylist and a new wardrobe', cost: 900, minAge: 14, charm: [2, 4], mood: 3,
     text: 'A stylist went through your wardrobe without mercy. You walk into rooms differently now.' },
-  { id: 'speaking', label: 'Take a public speaking course', cost: 150, minAge: 14, charm: [2, 3], willpower: 2,
+  { id: 'speaking', label: 'Public speaking course', cost: 150, minAge: 14, charm: [2, 3], willpower: 2,
     text: 'Every week of the course you stood up and talked while strangers timed you. By the end of the year you could hold a room.' },
-  { id: 'dance', label: 'Take dance classes', cost: 350, minAge: 8, charm: [1, 3], health: 2, mood: 2,
+  { id: 'dance', label: 'Dance classes', cost: 350, minAge: 8, charm: [1, 3], health: 2, mood: 2,
     text: 'Two left feet, then one, then none. You move better, and it shows when you walk in anywhere.' },
-  { id: 'improv', label: 'Take an improv class', cost: 250, minAge: 12, charm: [2, 3], mood: 3, acting: 2,
+  { id: 'improv', label: 'Improv class', cost: 250, minAge: 12, charm: [2, 3], mood: 3, acting: 2,
     text: 'You learned to say "yes, and" and mean it. You are quicker in conversation, and funnier.' },
-  { id: 'etiquette', label: 'Take an etiquette and manners course', cost: 600, minAge: 10, charm: [1, 3], discipline: 1,
+  { id: 'etiquette', label: 'Etiquette course', cost: 600, minAge: 10, charm: [1, 3], discipline: 1,
     text: 'Which fork, how to introduce people, when to write a thank-you note. Small things that people notice.' },
 ];
 

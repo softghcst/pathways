@@ -40,7 +40,7 @@ export default [
   },
   {
     id: 'kid_in_trouble', category: 'parenthood', ageRange: [25, 70], cooldown: 5, cast: { kid: 'child' }, castRequires: kidAged(7, 15),
-    text: 'The school rings: {kid} has hit another child, and says the other child started it.',
+    text: 'The school calls: {kid} has hit another child, and says the other child started it.',
     choices: [
       { label: 'Hear {kid}\'s side before anything else', outcomes: [any('It takes an hour to come out: the other child has been at them for weeks. You go back to the school together.', 'good', rel('kid', 10), hid('karma', 3),
         mem('kid', 'listened', 'When the school rang, you heard their side first.'))] },
@@ -62,7 +62,7 @@ export default [
   },
   {
     id: 'kid_asks_deposit', category: 'parenthood', ageRange: [40, 95], cooldown: 8, cast: { kid: 'child' }, castRequires: kidAged(20, 40),
-    text: '{kid} rings, working up to something: they have found a flat and are {$8000} short of the deposit.',
+    text: '{kid} calls, working up to something: they have found an apartment and are {$8000} short of the deposit.',
     choices: [
       { label: 'Give it to them', requires: [need('cashBase', '>=', 8000)], outcomes: [any('"Do not pay it back. Pay it forward." {kid} does not know what to say.', 'good', cash(-8000), rel('kid', 15), hid('karma', 6), count('donated', 8000),
         mem('kid', 'deposit', 'You gave them the deposit for their first flat.'))] },

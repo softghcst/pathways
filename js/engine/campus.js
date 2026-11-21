@@ -324,7 +324,7 @@ function abroadYear() {
 
 // ---------- The year ----------
 
-/** Yearly, while at university or college. `yearMark`: the mark just earned. */
+/** Yearly, while in college. `yearMark`: the mark just earned. */
 export function tickCampus(yearMark) {
   const p = player();
   const e = p.education;

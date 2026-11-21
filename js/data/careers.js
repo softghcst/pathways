@@ -52,7 +52,7 @@ const BASE_CAREERS = [
     levels: L(['Marketing assistant', 36, 46, 2], ['Marketing executive', 48, 64, 3], ['Marketing manager', 70, 98, 4], ['Marketing director', 120, 170, 0]) },
   { id: 'teacher', name: 'Teaching', category: 'professional', type: 'fulltime', hire: 'interview', stress: 2,
     req: { degree: 'university' }, doors: [{ flag: 'teacherRec', bonus: 0.15 }, { flag: 'teachingCert', bonus: 0.3 }],
-    levels: L(['Trainee teacher', 34, 40, 1], ['Teacher', 42, 58, 5], ['Head of department', 60, 75, 5], ['Head teacher', 85, 120, 0]) },
+    levels: L(['Trainee teacher', 34, 40, 1], ['Teacher', 42, 58, 5], ['Head of department', 60, 75, 5], ['Principal', 85, 120, 0]) },
   { id: 'nurse', name: 'Nursing', category: 'professional', type: 'fulltime', hire: 'interview', stress: 2,
     req: { degree: 'university', majors: ['nursing'], altProgramme: 'nursing' },
     levels: L(['Staff nurse', 48, 62, 3], ['Senior nurse', 65, 80, 4], ['Charge nurse', 82, 98, 5], ['Director of nursing', 110, 150, 0]) },
@@ -220,7 +220,7 @@ export const MAX_GIGS_PER_YEAR = 2;
 /** What the famous can do. min is the fame needed. cash is base units before fame scaling. */
 export const FAME_ACTIONS = [
   { id: 'book', name: 'Write a book', min: 15, skill: 'stats.intellect', cash: 40000, fame: 5,
-    ok: 'Your book comes out to queues round the block.', fail: 'Your book is politely reviewed and quickly remaindered.' },
+    ok: 'Your book comes out to queues around the block.', fail: 'Your book is politely reviewed and quickly remaindered.' },
   { id: 'photoshoot', name: 'Do a photoshoot', min: 20, skill: 'stats.charm', cash: 15000, fame: 3,
     ok: 'The cover sells out in a week.', fail: 'The photos are fine. Nobody mentions them.' },
   { id: 'commercial', name: 'Film a commercial', min: 30, skill: 'stats.charm', cash: 90000, fame: 2, karma: -2,

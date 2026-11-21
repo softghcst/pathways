@@ -124,7 +124,7 @@ export default {
             <button class="btn primary" data-club="find">Find a club or class</button></div>
         </div>` : ''}
         ${things.some((a) => a.charm) ? `<div class="card"><h3>Charm and confidence</h3>
-          <p class="muted" style="margin-bottom:10px">Charm ${p.stats.charm}. Each once a year; the more charming you are, the less each adds.</p>
+          <p class="muted" style="margin-bottom:10px">Charm ${p.stats.charm} · each once a year</p>
           <div class="btn-stack">${things.filter((a) => a.charm).map((a) => `<button class="btn" data-do="${a.id}" ${a.done ? 'disabled' : ''}>${esc(a.label)}${a.done ? ' · done this year' : ''}</button>`).join('')}</div>
         </div>` : ''}
         ${things.some((a) => !a.charm) ? `<div class="card"><h3>Things to do</h3>

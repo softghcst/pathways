@@ -202,7 +202,7 @@ export const PROGRAMS = [
   { id: 'coding', name: 'Programming certificate', years: 1, needs: 'high', security: 'min', schooling: 0.7, from: 2005,
     gives: { type: 'certificate', majorId: 'coding' }, blurb: 'Offline computers in a supervised classroom.' },
   { id: 'degree', name: 'University degree by distance learning', years: 4, needs: 'high', security: 'med', schooling: 0.6,
-    gives: { type: 'university', majorId: 'business' }, blurb: 'Course packs by post and an exam room once a term. A full degree.' },
+    gives: { type: 'university', majorId: 'business' }, blurb: 'Course packs by mail and an exam room once a term. A full degree.' },
 ];
 export const PROGRAM_BY_ID = Object.fromEntries(PROGRAMS.map((x) => [x.id, x]));
 

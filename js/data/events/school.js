@@ -167,7 +167,7 @@ export default [
     text: 'Rent is due on Friday and {mate} is {$300} short. Again.',
     choices: [
       { label: 'Cover it and say nothing', requires: [need('cashBase', '>=', 300)], outcomes: [any(
-        '{mate} pays you back in installments and washing-up. Something between you gets sturdier.', 'good',
+        '{mate} pays you back in installments and by doing your dishes. Something between you gets sturdier.', 'good',
         cash(-300), rel('mate', 10), hid('karma', 4), mem('mate', 'coveredRent', 'You covered their share of the rent without making it a thing.'))] },
       { label: 'Sit down and work out a budget together', check: chk(0.55, { 'stats.charm': 0.4, 'cast.mate.relationship': 0.5 }), outcomes: [
         ok('An awkward hour with a spreadsheet. It does not happen again.', rel('mate', 6), st('intellect', 1)),

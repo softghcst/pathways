@@ -118,7 +118,7 @@ export function housingOptions(app, p = player()) {
     ...(kin.length ? [{ id: 'kin', label: `Stay with ${kin[0].firstName} at first`, city: null }] : []),
     ...(app.routeId === 'work' ? [{ id: 'employer', label: 'Temporary housing from your new employer', city: null }] : []),
     ...(app.routeId === 'study' ? [{ id: 'student', label: 'A room in student housing', city: null }] : []),
-    { id: 'rent', label: `Rent a flat in ${app.city}`, city: null },
+    { id: 'rent', label: `Rent an apartment in ${app.city}`, city: null },
   ];
 }
 
@@ -154,7 +154,7 @@ export function checklist(caseId, p = player()) {
   const needPapers = eraOf().passport;
   const missing = needPapers ? goingPeople.filter((x) => !validPassport(x)) : [];
   const plan = travelPlan(app.jurisdictionId);
-  const work = app.routeId === 'work' ? 'Your sponsoring employer has a job waiting.' : app.routeId === 'study' ? 'Your place at university is confirmed.' : p.career.careerId ? 'You will need to find work there.' : 'Not needed for this route.';
+  const work = app.routeId === 'work' ? 'Your sponsoring employer has a job waiting.' : app.routeId === 'study' ? 'Your place in college is confirmed.' : p.career.careerId ? 'You will need to find work there.' : 'Not needed for this route.';
   return [
     { id: 'review', label: `Review ${COUNTRIES[app.jurisdictionId].name}`, done: true, note: `${app.city}, ${Math.round(distanceKm({ countryId: p.countryId, city: p.city }, { countryId: app.jurisdictionId, city: app.city }) ?? 0)} km away.` },
     { id: 'eligible', label: 'Confirm eligibility', done: true, note: app.routeName },

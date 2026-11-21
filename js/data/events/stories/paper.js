@@ -90,7 +90,7 @@ export default [
   {
     id: 'editor_calls', category: 'a call from the past', ageRange: [21, 28], once: true, priority: true,
     requires: [need('flags.stringer', '==', true)], cast: { editor: 'tag:editor' },
-    text: '{editor} rings: "I have a desk going spare and a pile of applications from strangers. You, I have already read. Do you want it?"',
+    text: '{editor} calls: "I have a spare desk and a pile of applications from strangers. You, I have already read. Do you want it?"',
     choices: [
       { label: 'Take the desk', outcomes: [any(
         'You start on Monday. Your first three months earn you {$6000} and a drawer of your own.',

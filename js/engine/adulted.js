@@ -181,6 +181,6 @@ export function unbank(e, startWith, sameFamily) {
   if (!e.banked) return startWith;
   const kept = Math.max(0, e.banked.credits - (sameFamily(e.banked.majorId, e.majorId) ? 0 : 30));
   delete e.banked;
-  if (kept > startWith) log(`${kept} credits from your earlier time at university have been counted toward this degree.`, 'system', 'good');
+  if (kept > startWith) log(`${kept} credits from your earlier time in college have been counted toward this degree.`, 'system', 'good');
   return Math.max(startWith, kept);
 }

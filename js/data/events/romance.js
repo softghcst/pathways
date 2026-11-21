@@ -9,12 +9,12 @@ export default [
   {
     id: 'they_propose', category: 'love', ageRange: [20, 60], once: true, weight: 3,
     requires: [single], cast: { love: 'partner' }, castRequires: [need('cast.love.relationship', '>=', 78), need('cast.love.age', '>=', 18)],
-    text: 'On an ordinary Tuesday, halfway through the washing-up, {love} dries their hands, takes a breath, and asks you to marry them.',
+    text: 'On an ordinary Tuesday, halfway through the dishes, {love} dries their hands, takes a breath, and asks you to marry them.',
     choices: [
-      { label: 'Say yes', outcomes: [any('You say yes with a tea towel over your shoulder. You are engaged. The wedding is yours to plan.', 'good',
+      { label: 'Say yes', outcomes: [any('You say yes with a dish towel over your shoulder. You are engaged. The wedding is yours to plan.', 'good',
         npcSet('love', { flags: { engaged: true } }), rel('love', 10), st('mood', 15),
-        mem('love', 'theyProposed', 'They proposed to you over the washing-up, and you said yes.'))] },
-      { label: 'Ask for time', outcomes: [any('{love} nods and picks the tea towel back up. Something in the room has shifted.', 'neutral', rel('love', -8))] },
+        mem('love', 'theyProposed', 'They proposed to you over the dishes, and you said yes.'))] },
+      { label: 'Ask for time', outcomes: [any('{love} nods and picks the dish towel back up. Something in the room has shifted.', 'neutral', rel('love', -8))] },
       { label: 'Say no', outcomes: [any('{love} takes it quietly, which is worse than shouting.', 'bad', rel('love', -30), st('mood', -6),
         mem('love', 'turnedDown', 'They proposed, and you said no.'))] },
     ],
@@ -89,7 +89,7 @@ export default [
     choices: [
       { label: 'Smile and pass the potatoes', outcomes: [any('{love} squeezes your knee under the table.', 'good', rel('love', 5), hid('discipline', 2))] },
       { label: 'Win her over', check: chk(0.4, { 'stats.charm': 0.9 }), outcomes: [
-        ok('By pudding she is showing you baby photos and telling {love} to hold on to you.', rel('love', 9), st('charm', 2)),
+        ok('By dessert she is showing you baby photos and telling {love} to hold on to you.', rel('love', 9), st('charm', 2)),
         bad('Your joke about her gravy does not land.', rel('love', -4), st('mood', -3)),
       ] },
       { label: 'Tell her what you always imagined', outcomes: [any('The drive home is very quiet.', 'bad', rel('love', -12), st('mood', 2), hid('karma', -2))] },

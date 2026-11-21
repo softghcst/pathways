@@ -583,7 +583,7 @@ export function lifeSummary(npc) {
   const c = country();
   const rows = [];
   const e = L.edu;
-  const school = { elementary: 'Elementary school', middle: 'Middle school', high: 'High school', university: 'At university',
+  const school = { elementary: 'Elementary school', middle: 'Middle school', high: 'High school', university: 'In college',
     apprenticeship: 'Apprentice', medical: 'At medical school', law: 'At law school' }[e.stage];
   // A child of the player's at school, or at a named university, has a fuller line of its own (kidschool.schoolLine).
   const named = npc.role === 'child' && (kid.schoolLine(npc));

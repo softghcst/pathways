@@ -49,7 +49,7 @@ export default [
   },
   {
     id: 'headhunter', category: 'work', ageRange: [22, 60], requires: [employed, need('career.performance', '>=', 60)], cast: { boss: 'tag:boss' }, cooldown: 8,
-    text: 'A recruiter rings: a rival wants you, for a fifth more money. You have not told {boss}.',
+    text: 'A recruiter calls: a rival wants you, for a fifth more money. You have not told {boss}.',
     choices: [
       { label: 'Take it', outcomes: [any('New badge, new desk, same work, twenty percent more. {boss} shakes your hand without warmth.', 'good', pay(1.2), perf(-5), rel('boss', -15), st('mood', 5))] },
       { label: 'Use it to ask for more here', check: chk(0.5, { 'career.performance': 0.8, 'cast.boss.relationship': 0.4 }), outcomes: [

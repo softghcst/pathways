@@ -418,7 +418,7 @@ export function answer(how) {
 export function pollingDay() {
   const p = player();
   const r = race();
-  if (!r || r.stage !== 'vote') return result(false, 'It is not polling day.', 'neutral');
+  if (!r || r.stage !== 'vote') return result(false, 'It is not Election Day.', 'neutral');
   const c = COUNTRIES[r.countryId];
   const s = system(c);
   const o = office(r);

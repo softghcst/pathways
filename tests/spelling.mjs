@@ -32,6 +32,14 @@ for (const f of files) {
   });
 }
 check(!found.length, `no British spellings (${found.length}: ${found.slice(0, 8).join('; ')})`);
+// British words, as well as spellings: the American word in the game's text.
+const VOCAB = /\b(?:dearer|fortnight|(?<!rice )pudding|solicitor|washing-up|tea towel|pram|nappy|nappies|petrol|car park|rings off|in hospital|at university|polling day|in the post|high street|head teacher|shop assistant|a flat in|rent a flat)\b/i;
+const words = [];
+for (const f of files) {
+  if (EXEMPT.has(f) || f.startsWith('tests/') || f.startsWith('docs/')) continue;
+  readFileSync(f, 'utf8').split('\n').forEach((l, i) => { if (/^\s*(\/\/|\*|\/\*)/.test(l) || /aliases:/.test(l)) return; const m = l.replace(/\/\/.*$/, '').match(VOCAB); if (m) words.push(`${f}:${i + 1} ${m[0]}`); }); // comments, and job titles people search by, are not shown
+}
+check(!words.length, `no British words (${words.length}: ${words.slice(0, 8).join('; ')})`);
 
 // 2. An old save: ids, keys and text in American spelling; names as they were.
 let s; do { s = createLife({ countryId: 'us' }); } while (s.player.royal);

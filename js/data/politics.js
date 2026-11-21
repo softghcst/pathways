@@ -129,7 +129,7 @@ export const MOVES = [
   { id: 'debate', name: 'Challenge your opponent to a debate', boost: [-6, 12], factor: 'intellect', text: 'An hour under the lights, with nowhere to hide.' },
   { id: 'babies', name: 'Kiss babies and eat local food', boost: [2, 5], factor: 'charm', text: 'You eat nine regional delicacies in one day and smile through all of them.' },
   { id: 'smear', name: 'Run attack adverts', boost: [-8, 12], dirty: true, karma: -6, text: 'Your opponent\'s worst photograph is on every channel.' },
-  { id: 'buy', name: 'Hand out envelopes on polling day', boost: [8, 18], illegal: true, karma: -12, text: 'A great many people are suddenly very keen to vote.' },
+  { id: 'buy', name: 'Hand out envelopes on Election Day', boost: [8, 18], illegal: true, karma: -12, text: 'A great many people are suddenly very keen to vote.' },
 ];
 
 /** What an office-holder can do with a year. Two a year. tier: the lowest office that can do it. */
@@ -167,7 +167,7 @@ export const TRAIL = [
   { id: 'donors', name: 'Dine with wealthy donors', raise: [2.5, 5], karma: -2, strings: true, text: 'The wine is excellent, and everybody at the table wants something.' },
   { id: 'poll', name: 'Commission a private poll', cost: 0.5, poll: true, text: '' },
   { id: 'smear', name: 'Run attack adverts', boost: [-5, 8], cost: 1, dirty: true, karma: -6, text: 'Your opponent\'s worst photograph is on every channel.' },
-  { id: 'buy', name: 'Hand out envelopes on polling day', boost: [6, 12], illegal: true, karma: -12, last: true, text: 'A great many people are suddenly very keen to vote.' },
+  { id: 'buy', name: 'Hand out envelopes on Election Day', boost: [6, 12], illegal: true, karma: -12, last: true, text: 'A great many people are suddenly very keen to vote.' },
 ];
 
 /** What is asked in a debate, by issue. Three are drawn. */

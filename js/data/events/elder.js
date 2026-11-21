@@ -31,10 +31,10 @@ export default [
   },
   {
     id: 'writing_a_will', category: 'elder', ageRange: [62, 120], once: true, weight: 2,
-    text: 'Your solicitor says it is time you put your wishes on paper.',
+    text: 'Your lawyer says it is time you put your wishes on paper.',
     choices: [
       { label: 'Leave everything to family', outcomes: [any('Signed, witnessed, filed. One less thing to think about.', 'good', flag('will', 'family'), st('mood', 3))] },
-      { label: 'Leave it all to charity', outcomes: [any('The solicitor raises an eyebrow and writes it down.', 'good', flag('will', 'charity'), hid('karma', 12))] },
+      { label: 'Leave it all to charity', outcomes: [any('The lawyer raises an eyebrow and writes it down.', 'good', flag('will', 'charity'), hid('karma', 12))] },
       { label: 'Bury the cash in the garden', requires: [need('cashBase', '>=', 100)], outcomes: [any('You draw a map and then lose the map.', 'neutral', flag('will', 'buried'), hid('crazy', 6))] },
       { label: 'Put it off', outcomes: [any('"Next year," you say, as you said last year.', 'neutral', hid('discipline', -2))] },
     ],

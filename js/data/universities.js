@@ -96,7 +96,7 @@ export const MAX_ORGS = 2;
 /** What a roommate is like to live with. line: how they are first described. clash: what the argument is about. */
 export const HABITS = [
   { id: 'tidy', line: 'folds everything, including towels', clash: 'the state you leave the kitchen in' },
-  { id: 'messy', line: 'has never knowingly washed a mug', clash: 'the washing-up, which has begun to grow' },
+  { id: 'messy', line: 'has never knowingly washed a mug', clash: 'the dirty dishes, which have begun to grow' },
   { id: 'owl', line: 'comes alive at midnight', clash: 'the noise at three in the morning' },
   { id: 'lark', line: 'is up at six, cheerfully', clash: 'the alarm that goes off at six, every day' },
   { id: 'host', line: 'knows everyone, and invites them round', clash: 'the strangers asleep on the sofa' },

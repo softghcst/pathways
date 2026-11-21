@@ -899,7 +899,7 @@ the Digital World because the game has no separate hobby-project system.
 | Property tax by country | `PROPERTY_TAX` in `js/data/countries.js` |
 | Monarchies: which countries have a crown, the titles used there, allowances, public duties, how rare a royal birth is | `js/data/royalty.js` |
 | How each country is governed, what its offices are called, campaign platforms, budgets and moves, what office-holders can do | `js/data/politics.js` |
-| Political scenes (class president, polling day, scandals, removal votes, uprisings) | `js/data/events/politics.js` |
+| Political scenes (class president, Election Day, scandals, removal votes, uprisings) | `js/data/events/politics.js` |
 | Royal and noble scenes (palace invitation, honors, scandal, protocol) | `js/data/events/royal.js` |
 | Moving abroad: who comes, how likely relatives are to say yes, shipping costs, the passport | `js/engine/emigration.js` |
 | Transport by era, places to stay, things to do on a trip, kinds of trip, refund terms, passports, visit rules by destination, pets moving, earlier jurisdictions | `js/data/travel.js` |
@@ -1317,7 +1317,7 @@ whether or not the player takes any part.
     few points, the same way all campaign long.
   - *The debate.* Three questions. A straight answer, a crowd-pleasing promise
     (which comes due in office), an attack, or a dodge.
-  - *Polling day.* The result is worked out once and stored; election night
+  - *Election Day.* The result is worked out once and stored; election night
     shows it arriving area by area, after an exit poll that may be wrong.
   A campaign left unfinished when the year ends plays itself out. One-party
   states have no voters to win: the committee decides.

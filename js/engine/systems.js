@@ -60,9 +60,9 @@ export function taxLine(c = country()) {
   const shape = taxShapeOf(c);
   const rate = Math.round(headlineRate(c) * 100);
   if (shape === TAX_SHAPES.none) return 'No income tax';
-  if (shape === TAX_SHAPES.flat) return `A flat ${rate}%`;
+  if (shape === TAX_SHAPES.flat) return `${rate}% flat`;
   const top = Math.round(taxBreakdown(typicalWage(c) * 200, c).marginal * 100);
-  return `${shape.name}: about ${Math.round(taxBreakdown(typicalWage(c), c).effective * 100)}% of a typical wage, up to ${top}% on the highest incomes`;
+  return `About ${Math.round(taxBreakdown(typicalWage(c), c).effective * 100)}%, up to ${top}%`;
 }
 
 // ---------- Health care ----------

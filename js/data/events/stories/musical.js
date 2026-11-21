@@ -235,7 +235,7 @@ export default [
   {
     id: 'cosmo_focus', category: 'licensed', ageRange: [18, 62], once: true, priority: true,
     requires: [need('degreeTypes', 'has', 'cosmetology')],
-    text: 'Your license in hair and makeup arrives in the post. Where do you want to point it?',
+    text: 'Your license in hair and makeup arrives in the mail. Where do you want to point it?',
     choices: [
       { label: 'Salon hair styling', outcomes: [any('You start building a chair of regulars.', 'good', flag('cosmoFocus', 'salon'), ms('Chose to specialize in salon hair styling.'))] },
       { label: 'Bridal hair and makeup', outcomes: [any('Saturdays are now booked a year ahead.', 'good', flag('cosmoFocus', 'bridal'), ms('Chose to specialize in bridal hair and makeup.'))] },
@@ -250,7 +250,7 @@ export default [
     id: 'open_call_director', category: 'a call from the past', ageRange: [24, 27], once: true, priority: true, exclusive: 'open_call',
     requires: [need('flags.musicalRoute', 'in', ['role', 'both']), need('flags.heardOpenCall', '!=', true)],
     cast: { director: 'tag:director' },
-    text: '{director} rings for the first time in years: "A new musical is casting in {city}. I told the team about the student who carried my spring show. The open call is Thursday. Go."',
+    text: '{director} calls for the first time in years: "A new musical is casting in {city}. I told the team about the student who carried my spring show. The open call is Thursday. Go."',
     choices: [
       { label: 'Go to the audition', outcomes: [any('You dig out your character shoes.', 'neutral',
         flag('heardOpenCall'), flag('auditionVia', 'director'), flag('auditionEdge', 100), queue('the_audition'))] },

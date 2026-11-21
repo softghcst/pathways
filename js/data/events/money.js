@@ -34,7 +34,7 @@ export default [
   },
   {
     id: 'tenant_arrears', category: 'landlord', ageRange: [18, 95], cooldown: 6, requires: [need('hasTenant', '==', true)],
-    text: 'Your tenant rings, embarrassed: they have lost their job and cannot make the rent for a while. They ask for three months\' grace.',
+    text: 'Your tenant calls, embarrassed: they have lost their job and cannot make the rent for a while. They ask for three months\' grace.',
     choices: [
       { label: 'Give them the three months', outcomes: [
         { on: 'always', weight: 3, tone: 'good', text: 'They find work in ten weeks and pay back every penny. They stay for years.', effects: [hid('karma', 8), st('mood', 3)] },

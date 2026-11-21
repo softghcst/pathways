@@ -8,9 +8,9 @@ const easy = (charm = 0.4, discipline = 0.3) => ({ base: 0.7, factors: { 'stats.
 
 export const PART_TIME_JOBS = [
   J('cafe', 'Café assistant', 'the café by the station', 3600, 12, 15, easy(0.5, 0.3), { next: 'cafe' }),
-  J('cinema', 'Cinema usher', 'the cinema', 3200, 10, 15, { base: 0.7, factors: { 'stats.charm': 0.4 } }),
+  J('cinema', 'Movie theater usher', 'the movie theater', 3200, 10, 15, { base: 0.7, factors: { 'stats.charm': 0.4 } }),
   J('supermarket', 'Shelf stacker', 'the supermarket', 4000, 12, 16, { base: 0.75, factors: { 'hidden.discipline': 0.4 } }, { next: 'grocery' }),
-  J('barista', 'Barista', 'a coffee chain on the high street', 4200, 14, 16, easy(0.5, 0.3), { next: 'cafe' }),
+  J('barista', 'Barista', 'a coffee chain on Main Street', 4200, 14, 16, easy(0.5, 0.3), { next: 'cafe' }),
   J('cashier', 'Cashier', 'a convenience store', 3800, 12, 16, easy(0.3, 0.4), { next: 'grocery' }),
   J('retail_pt', 'Retail assistant', 'a clothes shop in the mall', 4000, 12, 16, easy(0.5, 0.2), { next: 'retail' }),
   J('babysitter', 'Babysitter', 'a family down the street', 2600, 8, 14, { base: 0.65, factors: { 'stats.charm': 0.3, 'hidden.discipline': 0.4 } }),
@@ -19,7 +19,7 @@ export const PART_TIME_JOBS = [
   J('swim_pt', 'Swim instructor', 'the leisure center', 4600, 10, 16, { base: 0.5, factors: { 'stats.health': 0.5, 'stats.charm': 0.3 } }, { next: 'swim_teach', req: { 'stats.health': 55 } }),
   J('fitness_pt', 'Fitness instructor', 'a local gym', 5200, 10, 17, { base: 0.5, factors: { 'stats.health': 0.6 } }, { next: 'fitness', req: { 'stats.health': 60 } }),
   J('dance_pt', 'Dance instructor', 'a children\'s dance school', 4800, 8, 16, { base: 0.5, factors: { 'talents.dance': 0.7 } }, { req: { 'talents.dance': 55 } }),
-  J('golf_pt', 'Golf shop assistant', 'the golf club', 3800, 10, 15, easy(0.4, 0.2), { next: 'golf_course' }),
+  J('golf_pt', 'Golf shop clerk', 'the golf club', 3800, 10, 15, easy(0.4, 0.2), { next: 'golf_course' }),
   J('office_pt', 'Office assistant', 'a small accountancy firm', 5000, 14, 16, { base: 0.6, factors: { 'hidden.discipline': 0.5 } }, { next: 'admin_support' }),
   J('hotel_pt', 'Hotel front-desk clerk', 'a hotel in the center', 4800, 14, 17, easy(0.5, 0.2), { next: 'hotel' }),
   J('tester_pt', 'Video game tester', 'a games studio', 4600, 12, 16, { base: 0.5, factors: { 'stats.intellect': 0.5, 'hidden.discipline': 0.3 } }, { next: 'qa', from: 1980 }),

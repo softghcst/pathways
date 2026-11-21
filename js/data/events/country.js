@@ -105,7 +105,7 @@ export default [
   },
   {
     id: 'private_or_public', category: 'life here', ageRange: [25, 85], cooldown: 12, requires: [need('living.health', '<=', 60)],
-    text: 'Your chest has been tight for a month. The public clinic has a queue round the building and no doctor until Thursday. The private one across town can see you today.',
+    text: 'Your chest has been tight for a month. The public clinic has a line around the building and no doctor until Thursday. The private one across town can see you today.',
     choices: [
       { label: 'Go private', requires: [has(400)], outcomes: [any('Clean floors, a doctor who has time, and a prescription the same afternoon. This is what money is for here.', 'good', cash(-400), st('health', 6), st('mood', 2))] },
       { label: 'Queue at the public clinic', check: chk(0.5, { 'stats.health': 0.4 }), outcomes: [

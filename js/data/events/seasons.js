@@ -60,7 +60,7 @@ export default [
     { label: 'Read everything you can find', outcomes: [any('You go back to school knowing things your teachers do not expect.', 'good', st('intellect', 2))] },
     { label: 'Get bored, then inventive', outcomes: [any('By the end of the holidays you have built a fort, a radio and a grudge against your sibling.', 'neutral', st('mood', 2))] },
   ], { cooldown: 2 }),
-  scene('between_summer_job', [15, 19], { steps: both, when: (p, s) => covers(s, [(schoolStart(p.countryId) + 10) % 12, (schoolStart(p.countryId) + 11) % 12]) }, 'A local shop was hiring for the school holidays: a few weeks of work, cash in hand at the end.', [
+  scene('between_summer_job', [15, 19], { steps: both, when: (p, s) => covers(s, [(schoolStart(p.countryId) + 10) % 12, (schoolStart(p.countryId) + 11) % 12]) }, 'A local shop was hiring for summer vacation: a few weeks of work, cash in hand at the end.', [
     { label: 'Take it', outcomes: [any('Long days, sore feet and your own money for the first time.', 'good', cash(600), hid('discipline', 2))] },
     { label: 'Keep the holidays free', outcomes: [any('The holidays are yours. So is the empty wallet.', 'neutral', st('mood', 2))] },
   ]),

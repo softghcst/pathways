@@ -56,12 +56,12 @@ export default [
       ] },
       { label: 'Fetch a teacher', outcomes: [any('A teacher breaks it up. The kid nods at you on the way past.', 'good', hid('karma', 5))] },
       { label: 'Film it', outcomes: [any('The video gets passed around. You do not feel good about it.', 'bad', hid('karma', -8), followers(40))] },
-      { label: 'Keep walking', outcomes: [any('You look at the floor until you are round the corner.', 'neutral', hid('karma', -3), st('mood', -2))] },
+      { label: 'Keep walking', outcomes: [any('You look at the floor until you are around the corner.', 'neutral', hid('karma', -3), st('mood', -2))] },
     ],
   },
   {
     id: 'summer_work', timing: { seasons: ['spring', 'summer', 'hot', 'dry'] }, category: 'teen', ageRange: [14, 17], cooldown: 2,
-    text: 'A neighbor offers to pay you to clear and paint their fence over the school holidays.',
+    text: 'A neighbor offers to pay you to clear and paint their fence over summer vacation.',
     choices: [
       { label: 'Take it and do it properly', outcomes: [any('Six blistered weeks later you are handed {$400}.', 'good', cash(400), hid('discipline', 5), st('health', 2))] },
       { label: 'Take it and rush it', check: chk(0.5, { 'stats.charm': 0.4 }), outcomes: [

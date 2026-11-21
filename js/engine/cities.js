@@ -15,7 +15,10 @@ import { regionOf, CITY_ROWS, GENERIC, REGION_WORD, MOVE_COST, TRANSFER_CHANCE }
 /** Whether two regions of a country have any law that differs. */
 const lawDiffers = (countryId, a, b) => JSON.stringify(REGION_RULES[`${countryId}/${a}`] ?? {}) !== JSON.stringify(REGION_RULES[`${countryId}/${b}`] ?? {});
 const result = (ok, text, tone = ok ? 'good' : 'bad') => ({ ok, text, tone });
-const word = (k, hi, lo) => (k >= 1.5 ? `far ${hi}` : k >= 1.12 ? hi : k <= 0.75 ? `far ${lo}` : k <= 0.92 ? lo : 'about average');
+/** A city against the country as a whole, in a short label: "Expensive Homes", "Higher Pay". */
+const label = (k, [veryHi, hi, avg, lo, veryLo]) => (k >= 1.5 ? veryHi : k >= 1.12 ? hi : k <= 0.75 ? veryLo : k <= 0.92 ? lo : avg);
+const HOMES = ['Very Expensive Homes', 'Expensive Homes', 'Average Homes', 'Cheaper Homes', 'Very Cheap Homes'];
+const PAY = ['Very High Pay', 'Higher Pay', 'Average Pay', 'Lower Pay', 'Very Low Pay'];
 
 /**
  * What is known about a city. A city the game has no row for gets a generic profile.
@@ -32,7 +35,7 @@ export function cityOf(countryId, name) {
   const pay = row?.pay ?? g.pay;
   const svc = SERVICES[single || !c?.cities.includes(name) ? 'only' : kind];
   return { name, countryId, region: row?.region ?? null, regionId: row?.regionId ?? null, regionWord: row ? REGION_WORD[countryId] : null, kind, housing, pay,
-    estimated: !row, housingWord: word(housing, 'dearer', 'cheaper'), payWord: word(pay, 'higher', 'lower'),
+    estimated: !row, housingWord: label(housing, HOMES), payWord: label(pay, PAY),
     safety: svc.safety, schools: svc.schools, health: svc.health,
     servicesLine: [svc.health >= 5 ? 'major hospitals' : svc.health < 0 ? 'fewer specialist hospitals' : '', svc.safety > 0 ? 'safer than average' : svc.safety < 0 ? 'more crime than average' : ''].filter(Boolean).join(', ') };
 }
@@ -50,7 +53,7 @@ export const payK = (city = player().city, countryId = player().countryId) => ci
 /** One line about a city, for a list. */
 export function cityLine(countryId, name) {
   const k = cityOf(countryId, name);
-  return [k.kind === 'capital' ? 'the capital' : '', `homes ${k.housingWord}`, `pay ${k.payWord}`].filter(Boolean).join(' · ');
+  return [k.kind === 'capital' ? 'Capital' : '', k.housingWord, k.payWord].filter(Boolean).join(' · ');
 }
 
 // ---------- Moving within the country ----------
@@ -137,7 +140,7 @@ export function relocate(cityName) {
   const law = lawDiffers(p.countryId, to.regionId, from.regionId) ? `Some laws are different in ${to.region ?? cityName}. ` : '';
   const text = `You moved from ${from.name} to ${cityName}${to.region && to.region !== cityName ? `, ${to.region}` : ''}. ${work}`
     + `${mine ? 'You own a home here and can move straight in. ' : home && !p.homeId ? `Your home in ${from.name} is still yours: let it, sell it, or keep it. ` : ''}`
-    + `Homes here are ${to.housingWord}${to.housingWord === 'about average' ? '' : ' than the country as a whole'}, and pay is ${to.payWord}. ${law}It cost ${fmtMoney(cost, c)}.`;
+    + `${to.housingWord}, ${to.payWord}. ${law}It cost ${fmtMoney(cost, c)}.`;
   log(text, 'system', 'good');
   return { ...result(true, text), quit };
 }

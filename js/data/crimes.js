@@ -32,7 +32,7 @@ export const CRIMES = [
   { id: 'mugging', offense: 'robbery', name: 'Mug someone', minAge: 16, base: 0.45,
     factors: { 'talents.crime': 0.55, 'stats.health': 0.25, 'hidden.karma': 0.2 },
     loot: [80, 1800], heat: 20, caught: 0.55, karma: -10, danger: 0.08,
-    done: 'They hand it all over without a word. You are round the corner before they breathe out.', failed: 'They fight back, loudly, and people come running.' },
+    done: 'They hand it all over without a word. You are around the corner before they breathe out.', failed: 'They fight back, loudly, and people come running.' },
   { id: 'car_theft', offense: 'vehicle_theft', name: 'Steal a car', minAge: 16, base: 0.4,
     factors: { 'talents.crime': 0.65, 'stats.intellect': 0.2, 'hidden.karma': 0.2 },
     loot: [2500, 30000], heat: 22, caught: 0.6, karma: -8,

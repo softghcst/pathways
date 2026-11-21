@@ -82,7 +82,7 @@ export default [
   {
     id: 'big_night', category: 'commitments collide', ageRange: [15, 19], weight: 3, cooldown: 3,
     requires: [need('career.partTime', '!=', false)], cast: { pal: 'friend', manager: 'tag:manager' },
-    text: '{pal}\'s first proper gig is on Friday and they have saved you a spot at the front. At four o\'clock {manager} rings: someone has dropped out, and they need you on Friday night.',
+    text: '{pal}\'s first proper gig is on Friday and they have saved you a spot at the front. At four o\'clock {manager} calls: someone has dropped out, and they need you on Friday night.',
     choices: [
       { label: 'Go to the gig', outcomes: [any(
         'You are at the front, shouting the words. {pal} finds your face in the crowd during the last song. {manager} covers the shift alone.', 'good',

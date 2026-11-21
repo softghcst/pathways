@@ -512,7 +512,7 @@ function collegeTeam(state, a, e) {
   }
   return org;
 }
-/** Leaving the team at university costs the athletic part of a scholarship, from the next year's fees. */
+/** Leaving the team in college costs the athletic part of a scholarship, from the next year's fees. */
 export function quitCollegeTeam(sportId, state = store.state) {
   const p = state.player;
   const e = sp.entryOf(sportId, p.id, state);

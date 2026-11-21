@@ -91,7 +91,7 @@ export function startCare(n, c) {
     care.history.push({ year: year(), text: `Began ${th.t.name.toLowerCase()}${doc ? ` with ${clinicianName(doc)}` : ''}.` });
     if (th.t.id === 'cancer_treatment') {
       care.stage = seeded('kinstage', n.id).int(1, 4);
-      if (care.stage <= 3) { care.stays.push({ year: year(), reason: 'surgery', weeks: 1 }); care.history.push({ year: year(), text: 'A short stay in hospital for surgery.' }); n.flags.inHospital = year(); }
+      if (care.stage <= 3) { care.stays.push({ year: year(), reason: 'surgery', weeks: 1 }); care.history.push({ year: year(), text: 'A short stay in the hospital for surgery.' }); n.flags.inHospital = year(); }
     }
   }
   const med = meds[0];
@@ -209,9 +209,9 @@ export function kinCareYear(n) {
 export function kinAdmitted(n, c, reason, weeks = 1) {
   if (!c.care) startCare(n, c);
   c.care?.stays.push({ year: year(), reason, weeks });
-  c.care?.history.push({ year: year(), text: `In hospital after ${reason}.` });
+  c.care?.history.push({ year: year(), text: `In the hospital after ${reason}.` });
   n.flags.inHospital = year();
-  if (c.shared || n.meters.relationship >= 40) log(`${n.firstName} is in hospital after ${reason}.`, 'system', 'bad');
+  if (c.shared || n.meters.relationship >= 40) log(`${n.firstName} is in the hospital after ${reason}.`, 'system', 'bad');
 }
 
 // ---------- What the player can do, and see ----------
@@ -231,7 +231,7 @@ export function npcCareActions(n) {
     out.push({ id: 'askCare', label: 'Ask how their treatment is going' });
     if (player().age >= 16 && n.flags.helpCare !== year()) out.push({ id: 'helpCare', label: 'Help them get to their appointments this year' });
   }
-  if (n.flags.inHospital === year() && n.flags.visited !== year()) out.push({ id: 'visitCare', label: 'Visit them in hospital' });
+  if (n.flags.inHospital === year() && n.flags.visited !== year()) out.push({ id: 'visitCare', label: 'Visit them in the hospital' });
   return out;
 }
 

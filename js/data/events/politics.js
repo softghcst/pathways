@@ -32,9 +32,9 @@ export default [
     id: 'school_petition', category: 'politics', ageRange: [13, 17], once: true, requires: [need('education.enrolled', '==', true)],
     text: 'The school has banned phones at lunch. Half your year is furious, and somebody says there ought to be a petition.',
     choices: [
-      { label: 'Start one, and take it to the head teacher', check: chk(0.5, { 'stats.charm': 0.4, 'hidden.willpower': 0.4 }), outcomes: [
+      { label: 'Start one, and take it to the principal', check: chk(0.5, { 'stats.charm': 0.4, 'hidden.willpower': 0.4 }), outcomes: [
         ok('Four hundred signatures. The rule is changed to Fridays only, and you have discovered that this sort of thing can work.', count('polExp', 2), hid('willpower', 3), st('mood', 6)),
-        bad('The head teacher thanks you for your interest in school policy and changes nothing.', count('polExp', 1), st('mood', -2)),
+        bad('The principal thanks you for your interest in school policy and changes nothing.', count('polExp', 1), st('mood', -2)),
       ] },
       { label: 'Sign it', outcomes: [any('Your name is on page six.', 'neutral')] },
       { label: 'Say the rule is fair enough', outcomes: [any('It is not a popular view, and you hold it anyway.', 'neutral', hid('willpower', 2), st('mood', -2))] },
@@ -44,7 +44,7 @@ export default [
   // ---------- Being a voter ----------
   {
     id: 'polling_day', category: 'politics', ageRange: [18, 100], cooldown: 3, requires: [...voter, need('electionYear', '==', true)],
-    text: 'It is polling day. There is a queue outside the school hall, and a dog tied to the railings.',
+    text: 'It is Election Day. There is a line outside the school hall, and a dog tied to the railings.',
     choices: [
       { label: 'Read up on everyone, then vote', outcomes: [any('You make a cross in a box with a pencil on a string, and feel briefly like part of something.', 'good', st('mood', 3), st('intellect', 1))] },
       { label: 'Vote for the funniest name on the paper', outcomes: [any('It is a matter of record that your candidate got nineteen votes, and that one of them was yours.', 'neutral', st('mood', 4))] },
@@ -201,7 +201,7 @@ export default [
       ] },
       { label: 'Push the child beside you out of the way', outcomes: [
         { on: 'always', weight: 0.7, tone: 'good', text: 'The shot hits the wall where she was standing. Her mother will vote for you for the rest of her life, and so will everybody else\'s.', effects: [approval(22), hid('karma', 15), count('livesSaved')] },
-        { on: 'always', weight: 0.22, tone: 'bad', text: 'She is safe. You are not: the bullet takes you in the side, and you spend two months in hospital.', effects: [approval(25), hid('karma', 15), st('health', -45), count('livesSaved')] },
+        { on: 'always', weight: 0.22, tone: 'bad', text: 'She is safe. You are not: the bullet takes you in the side, and you spend two months in the hospital.', effects: [approval(25), hid('karma', 15), st('health', -45), count('livesSaved')] },
         { on: 'always', weight: 0.08, tone: 'bad', text: 'She is safe. They name a school after you.', effects: [hid('karma', 20), count('livesSaved'), death('an assassin\'s bullet, shielding a child')] },
       ] },
     ],
@@ -255,7 +255,7 @@ export default [
   },
   {
     id: 'kin_campaign', category: 'family', ageRange: [30, 120], queuedOnly: true,
-    text: 'Your {rel} {kin} is standing for {title}, and polling day is close. {kin} has not asked for your help, which is how you know it is wanted.',
+    text: 'Your {rel} {kin} is standing for {title}, and Election Day is close. {kin} has not asked for your help, which is how you know it is wanted.',
     choices: [
       { label: 'Campaign at their side', outcomes: [any('You clear your diary.', 'neutral', kin('campaign'))] },
       { label: 'Pay for the leaflets ({cost})', outcomes: [any('You reach for your checkbook.', 'neutral', kin('money'))] },

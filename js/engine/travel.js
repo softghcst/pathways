@@ -67,7 +67,7 @@ export function typeBlock(typeId, destId = null, p = player()) {
     case 'professional': return p.career.careerId && (p.career.level ?? 0) >= 1 ? '' : 'For people a few years into a career.';
     case 'offer': return p.flags.sponsor && (!destId || p.flags.sponsor === destId) ? '' : 'You need an interview offered by an employer abroad.';
     case 'language': return destId && !languagesOf(destId).length ? 'That place has no language of its own for you to learn.' : '';
-    case 'university': return p.education.enrolled && ['university', 'graduate', 'medical', 'law', 'doctorate'].includes(p.education.stage) ? '' : 'You must be enrolled at university.';
+    case 'university': return p.education.enrolled && ['university', 'graduate', 'medical', 'law', 'doctorate'].includes(p.education.stage) ? '' : 'You must be enrolled in college.';
     default: return '';
   }
 }

@@ -115,7 +115,7 @@ const teen = [
     choices: [
       { label: 'Listen', outcomes: [any('You hear {pal} out. Some of it you had half noticed yourself.', 'neutral', rel('pal', 6), st('intellect', 1))] },
       { label: 'Explain what {pal} does not see', outcomes: [any('You tell {pal} what {love} is like when it is just the two of you. {pal} listens.', 'neutral', rel('pal', 2))] },
-      { label: 'Tell {pal} it is not their business', outcomes: [any('{pal} says "fine", and it is not fine for a fortnight.', 'bad', rel('pal', -10))] },
+      { label: 'Tell {pal} it is not their business', outcomes: [any('{pal} says "fine", and it is not fine for two weeks.', 'bad', rel('pal', -10))] },
     ] },
   { id: 'asking_advice', category: 'teen', ageRange: TEEN, cooldown: 8, cast: { love: 'partner', elder: 'parent' },
     text: 'Things with {love} are moving faster than you are sure about. {elder} has noticed you are quiet.',

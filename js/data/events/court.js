@@ -116,7 +116,7 @@ export default [
     text: 'Your first public engagement: opening a children\'s ward. There is a ribbon, a pair of scissors too big for your hands, and a row of cameras.',
     choices: [
       { label: 'Do exactly as you were told', outcomes: [any('You cut the ribbon, say your one line, and shake eleven hands. The matron says you are a credit to your family.', 'good', image(4), hid('discipline', 3))] },
-      { label: 'Stop and talk to a boy with his leg in plaster', outcomes: [any('You sit on his bed for twenty minutes comparing scars, and the whole program runs late. The photograph of the two of you is the one everybody keeps.', 'good', image(9), hid('karma', 4), st('mood', 5))] },
+      { label: 'Stop and talk to a boy with his leg in a cast', outcomes: [any('You sit on his bed for twenty minutes comparing scars, and the whole program runs late. The photograph of the two of you is the one everybody keeps.', 'good', image(9), hid('karma', 4), st('mood', 5))] },
       { label: 'Freeze', outcomes: [any('The scissors will not cut and your line will not come. A nurse puts a hand on your shoulder, and the two of you do it together.', 'neutral', image(1), st('mood', -5))] },
     ],
   },

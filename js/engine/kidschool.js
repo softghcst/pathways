@@ -282,7 +282,7 @@ export function uniTalk(id, how) {
   let text;
   if (how === 'mine') {
     const u = myUniversity();
-    if (!u) return result(false, 'You did not go to university, or it is not there any more.', 'neutral');
+    if (!u) return result(false, 'You did not go to college, or it is not there any more.', 'neutral');
     f.uniWish = u.id; f.pushUniversity = true;
     bump(n, n.meters.crazy >= 60 ? -3 : 1);
     text = `You tell ${n.firstName} about ${u.name}: the library, the river, the friends you still have. ${n.meters.crazy >= 60 ? `${they(n).replace(/^./, (c) => c.toUpperCase())} rolls ${their(n)} eyes, and takes the prospectus anyway.` : `${they(n).replace(/^./, (c) => c.toUpperCase())} puts it on the list.`}`;

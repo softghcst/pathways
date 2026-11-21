@@ -61,7 +61,7 @@ export default [
     choices: [
       { label: 'Correct them, calmly, every time', check: chk(0.55, { 'hidden.willpower': 0.5, 'stats.charm': 0.3 }), outcomes: [
         ok('By the fourth time they have stopped. Somebody else at the table squeezes your hand under it.', hid('willpower', 4), st('mood', 4)),
-        bad('They keep at it, and enjoy it. You finish your plate and do not stay for pudding.', st('mood', -8)),
+        bad('They keep at it, and enjoy it. You finish your plate and do not stay for dessert.', st('mood', -8)),
       ] },
       { label: 'Leave the table', outcomes: [any('You are in the car before anyone has put a fork down. Two of them come out after you.', 'neutral', st('mood', -3), hid('willpower', 2))] },
       { label: 'Let it go, this once', outcomes: [any('You say nothing, and it sits in your chest like a stone for a week.', 'bad', st('mood', -7))] },

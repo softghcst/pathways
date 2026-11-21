@@ -6,7 +6,7 @@ import { openNews } from '../leisure.js';
 import { openWorld } from '../world.js';
 import { player, country } from '../../state.js';
 import * as living from '../../engine/living.js';
-import { esc } from '../../util.js';
+import { esc, theCountry } from '../../util.js';
 import { TRAIT_BY_ID } from '../../data/traits.js';
 import { BIRTH_BY_ID } from '../../data/birthConditions.js';
 import { meterHtml } from '../meter.js';
@@ -69,7 +69,7 @@ export default {
         ${identityRows().map(([a, b]) => `<div class="kv"><span>${esc(a)}</span><span>${esc(b)}</span></div>`).join('')}
         <button class="btn small" data-identity style="margin-top:10px;width:100%">Edit identity</button>
       </div>
-      ${(() => { const here = living.summary(); const era = getEra(store.state.year); const now = eventsIn(p.countryId).filter((e) => e.name && !e.independence); return `<div class="card"><h3>Life in ${esc(country().name)}${era.id === 'now' ? '' : ` · ${esc(era.name)}`}</h3>
+      ${(() => { const here = living.summary(); const era = getEra(store.state.year); const now = eventsIn(p.countryId).filter((e) => e.name && !e.independence); return `<div class="card"><h3>Life in ${esc(theCountry(country().name))}${era.id === 'now' ? '' : ` · ${esc(era.name)}`}</h3>
         ${here.crisis ? `<p style="margin-bottom:8px"><strong>${esc(here.crisis.name)}.</strong> ${esc(here.crisis.blurb)}</p>` : ''}
         <div class="kv"><span>Your standing here</span><span><strong>${esc(living.tierName())}</strong></span></div>
         <div class="kv"><span>The economy</span><span>${esc(outlook().name)}</span></div>

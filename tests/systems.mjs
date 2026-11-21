@@ -54,7 +54,7 @@ check(eff('fr', 10) > eff('fr', 1) && eff('us', 10) > eff('us', 1) && Math.abs(e
 check(Math.abs(eff('hu', 0.3) - eff('hu', 30)) < 1e-6, 'a flat tax is the same share of any income');
 check(eff('fr', 0.3) < eff('fr', 1) && eff('us', 0.3) < eff('us', 1), 'the low paid pay a smaller share where bands rise');
 check(sys.taxBreakdown(1e9, COUNTRIES.ae).tax === 0 && /No income tax/.test(sys.taxLine(COUNTRIES.ae)), 'the United Arab Emirates takes nothing');
-check(profile('de').game.some(([k, v]) => k === 'How income is taxed' && /Steeply/.test(v)) && profile('us').game.some(([k, v]) => k === 'Health care' && /Private insurance/.test(v)), 'the world explorer says how each works');
+check(profile('de').game.some(([k, v]) => k === 'How income is taxed' && /^About \d+%, up to \d+%$/.test(v)) && /flat/.test(sys.taxLine(COUNTRIES.hu)) && profile('us').game.some(([k, v]) => k === 'Health care' && /Private insurance/.test(v)), 'the world explorer says how each works, briefly');
 section('shapes: steep, rising, flat and none behave as named');
 
 // 4. Health care: who is covered, and what they pay.

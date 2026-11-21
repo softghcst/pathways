@@ -53,7 +53,7 @@ export default [
       { label: 'Take it, and ask {love} to come', check: chk(0.5, { 'cast.love.relationship': 0.9 }), outcomes: [
         ok('{love} thinks about it for a week, and says yes. You both start again in {city}.', promoted(), { type: 'moveCity' }, rel('love', -4), npcSet('love', { flags: { heldBack: true } }),
           mem('love', 'movedForYou', 'They gave up their own work to move for your promotion.')),
-        bad('{love} comes, and does not forgive it. The new job is everything you were promised. The flat is very quiet.', promoted(), { type: 'moveCity' }, rel('love', -20), npcSet('love', { flags: { heldBack: true } })),
+        bad('{love} comes, and does not forgive it. The new job is everything you were promised. The apartment is very quiet.', promoted(), { type: 'moveCity' }, rel('love', -20), npcSet('love', { flags: { heldBack: true } })),
       ] },
       { label: 'Turn it down', outcomes: [any('{boss} nods, and gives it to someone else within the month. {love} does not say thank you, and does not need to.', 'neutral', perf(-3), rel('love', 10), wk('satisfaction:-6'),
         mem('love', 'stayedForMe', 'You turned down a promotion so they could keep the work they loved.'))] },
@@ -250,7 +250,7 @@ export default [
         ok('You do not stop moving for five hours. Nothing goes out wrong. At midnight someone hands you a drink and nobody speaks for a while.', perf(9), wk('stress:8'), cash(120)),
         bad('It is too much for one person. Three tables walk out, and one of them writes a review.', perf(-4), wk('stress:10')),
       ] },
-      { label: 'Go after {mate}', outcomes: [any('Five minutes in the yard by the bins. {mate} comes back in, red-eyed, and finishes the night. The tables waited; the friendship will not forget.', 'good', rel('mate', 14), perf(1))] },
+      { label: 'Go after {mate}', outcomes: [any('Five minutes in the yard by the trash. {mate} comes back in, red-eyed, and finishes the night. The tables waited; the friendship will not forget.', 'good', rel('mate', 14), perf(1))] },
       { label: 'Tell the manager and carry on with your own tables', outcomes: [any('Your section runs perfectly. The rest of the room is chaos, and you can see it from where you stand.', 'neutral', perf(2), rel('mate', -4))] },
     ],
   },
@@ -412,7 +412,7 @@ export default [
         ok('The saving is real. So is the drawer of cash you now have to explain to yourself.', wk('biz:cash:0.06'), hid('karma', -4)),
         bad('The supplier is investigated, and their customers with them. It costs you a fine and a difficult month.', wk('biz:cash:-0.08'), wk('biz:rep:-6'), hid('karma', -4), { type: 'legal', delta: 4 }),
       ] },
-      { label: 'Find another supplier', outcomes: [any('It takes a month of phone calls. The new one is dearer and delivers on time.', 'neutral', wk('biz:quality:3'))] },
+      { label: 'Find another supplier', outcomes: [any('It takes a month of phone calls. The new one costs more and delivers on time.', 'neutral', wk('biz:quality:3'))] },
     ],
   },
   {

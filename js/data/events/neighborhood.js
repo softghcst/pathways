@@ -19,7 +19,7 @@ export default [
     choices: [
       { label: 'Go over and introduce yourself', outcomes: [any('You knocked, said hello and pointed out where the good bakery is. {person} seemed glad of it.', 'good', hood({ do: 'meet', rel: 38 }), st('mood', 2))] },
       { label: 'Take round something to eat, as a welcome', requires: teen, outcomes: [any('A tray of something warm and a note with your name on it. {person} came round the next day to return the tray, and stayed to talk.', 'good', cash(-15), hood({ do: 'meet', rel: 46, help: true }), hid('karma', 2))] },
-      { label: 'Invite them over once they are settled', requires: adult, outcomes: [any('They came for supper a fortnight later, tired and grateful. {person} knows your street better now.', 'good', cash(-30), hood({ do: 'meet', rel: 48 }))] },
+      { label: 'Invite them over once they are settled', requires: adult, outcomes: [any('They came for dinner two weeks later, tired and grateful. {person} knows your street better now.', 'good', cash(-30), hood({ do: 'meet', rel: 48 }))] },
       { label: 'Give them space to settle in', outcomes: [any('You nodded across the street and let them unpack in peace. There will be time.', 'neutral')] },
     ],
   },

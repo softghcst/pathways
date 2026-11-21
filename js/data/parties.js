@@ -65,7 +65,7 @@ export const LEVERS = {
   tax: { name: 'income tax', follows: 'tax', cost: -1.5, step: 0.02,
     up: 'raised income tax by two points', down: 'cut income tax by two points', feel: (n) => `Income tax is ${Math.abs(n) * 2} points ${n > 0 ? 'higher' : 'lower'} than it was.` },
   tuition: { name: 'university funding', follows: 'services', cost: 1, step: 0.15,
-    up: 'put more public money into universities, cutting tuition', down: 'cut university funding, raising tuition', feel: (n) => `Tuition is ${Math.abs(n) * 15}% ${n > 0 ? 'cheaper' : 'dearer'}.` },
+    up: 'put more public money into universities, cutting tuition', down: 'cut university funding, raising tuition', feel: (n) => `Tuition is ${Math.abs(n) * 15}% ${n > 0 ? 'cheaper' : 'more expensive'}.` },
   health: { name: 'health funding', follows: 'services', cost: 1, step: 0.15,
     up: 'put more money into health care, cutting what patients pay', down: 'cut health funding, raising what patients pay', feel: (n) => `Medical bills are ${Math.abs(n) * 15}% ${n > 0 ? 'lower' : 'higher'}.` },
   rent: { name: 'housing', follows: 'housing', cost: 0.5, step: 0.06,

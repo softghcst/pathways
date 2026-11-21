@@ -122,7 +122,7 @@ export default [
         ok('{pal} goes quiet, then says they had wondered too. It is over within a month.', rel('pal', 10), hid('karma', 3)),
         bad('{pal} tells you that you are jealous. You are not invited to things for a while.', rel('pal', -18), st('mood', -4)),
       ] },
-      { label: 'Say nothing and stay close', outcomes: [any('It ends badly in the spring. You are the one {pal} rings at two in the morning.', 'good', rel('pal', 8), hid('karma', 4))] },
+      { label: 'Say nothing and stay close', outcomes: [any('It ends badly in the spring. You are the one {pal} calls at two in the morning.', 'good', rel('pal', 8), hid('karma', 4))] },
       { label: 'Keep your distance until it blows over', outcomes: [any('It takes two years to blow over, and {pal} notices who was missing.', 'neutral', rel('pal', -8))] },
     ],
   },
@@ -172,7 +172,7 @@ export default [
   },
   {
     id: 'headhunter_call', category: 'work', ageRange: [26, 58], cooldown: 12, requires: [employed, need('career.performance', '>=', 60)],
-    text: 'A recruiter rings your mobile at your desk: a rival firm would like to talk, and is hinting at more money.',
+    text: 'A recruiter calls your cell at your desk: a rival firm would like to talk, and is hinting at more money.',
     choices: [
       { label: 'Use it to ask for a raise', check: chk(0.45, { 'stats.charm': 0.4, 'career.performance': 0.6 }), outcomes: [
         ok('Your boss matches it before you have finished the sentence.', pay(1.08), st('mood', 6)),
@@ -384,7 +384,7 @@ export default [
       ] },
       { label: 'Carry on. You have been driving for sixty years', outcomes: [
         { on: 'always', weight: 0.8, tone: 'neutral', text: 'You go on driving, a little slower, with everyone holding their breath.', effects: [hid('willpower', 2)] },
-        { on: 'always', weight: 0.17, tone: 'bad', text: 'You pull out without looking. The car is written off and you spend a month in hospital.', effects: [st('health', -25), st('mood', -10)] },
+        { on: 'always', weight: 0.17, tone: 'bad', text: 'You pull out without looking. The car is written off and you spend a month in the hospital.', effects: [st('health', -25), st('mood', -10)] },
         { on: 'always', weight: 0.03, tone: 'bad', text: 'You pull out without looking.', effects: [death('a car accident')] },
       ] },
     ],
@@ -403,7 +403,7 @@ export default [
   },
   {
     id: 'scam_call', category: 'later life', ageRange: [65, 120], cooldown: 8, requires: [has(3000)],
-    text: 'A polite young man rings to say he is from your bank\'s fraud team, and your savings must be moved tonight to keep them safe.',
+    text: 'A polite young man calls to say he is from your bank\'s fraud team, and your savings must be moved tonight to keep them safe.',
     choices: [
       { label: 'Hang up and ring the bank yourself', outcomes: [any('The bank has never heard of him. They thank you for reporting it.', 'good', st('intellect', 1), hid('karma', 2))] },
       { label: 'Keep him talking for an hour', outcomes: [any('You invent three accounts and a parrot. He hangs up on you in the end.', 'good', st('mood', 8), tal('acting', 2))] },

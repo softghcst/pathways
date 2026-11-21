@@ -25,7 +25,7 @@ const disagreement = (role) => ({
       check: chk(0.6, { 'health.skills.distress': 0.9 }), outcomes: [
         ok('You say you need a minute, go outside, breathe, and come back. The conversation you have then is a different one.', rel('love', 4), st('mood', 3),
           skill('distress', 'conflict', 'stepping away from an argument before it escalated')),
-        bad('You step away, but it follows you round the block. You come back still upset. You both get through it.', rel('love', -1),
+        bad('You step away, but it follows you around the block. You come back still upset. You both get through it.', rel('love', -1),
           skill('distress', 'conflict', 'an argument that was hard to step back from', 1)),
       ] },
     { label: 'Say it all, now', check: chk(0.35, { 'stats.charm': 0.4, 'cast.love.relationship': 0.4 }), outcomes: [
@@ -100,7 +100,7 @@ export default [
     requires: [need('wheelchairBarrier', '==', true)],
     text: '{friend} is having a birthday party, upstairs at a bar with no lift.',
     choices: [
-      { label: 'Tell {friend}, and suggest somewhere step-free', outcomes: [any('{friend} is mortified they did not think of it, and moves it to the place round the corner. It is a better bar anyway.', 'good', rel('friend', 5), st('mood', 3))] },
+      { label: 'Tell {friend}, and suggest somewhere step-free', outcomes: [any('{friend} is mortified they did not think of it, and moves it to the place around the corner. It is a better bar anyway.', 'good', rel('friend', 5), st('mood', 3))] },
       { label: 'Write to the bar about access', outcomes: [any('A month later they reply. A year later there is a ramp and an elevator. Small things move.', 'good', hid('karma', 2))] },
       { label: 'Skip it and see {friend} another day', outcomes: [any('You take {friend} out for lunch the week after. Still, you would have liked to be there.', 'neutral', rel('friend', -1), st('mood', -2))] },
     ],
@@ -204,7 +204,7 @@ export default [
       { label: 'Reach out to someone you trust', outcomes: [any('You send the message. They call straight back.', 'good', st('mood', 6), health({ do: 'stress', delta: -8 }))] },
       { label: 'Use the plan you made for moments like this', requires: [need('inCare', '==', true)], outcomes: [any('You get the plan out, and do the first thing on it, then the next.', 'good',
         skill('distress', 'safety_plan', 'using your plan for hard moments', 2), st('mood', 4))] },
-      { label: 'Accept a short, voluntary stay in hospital if your team offers one', requires: [need('inCare', '==', true)], outcomes: [any('You pack a bag. It is calmer there than you expected, and people check on you without making a fuss.', 'good',
+      { label: 'Accept a short, voluntary stay in the hospital if your team offers one', requires: [need('inCare', '==', true)], outcomes: [any('You pack a bag. It is calmer there than you expected, and people check on you without making a fuss.', 'good',
         health({ do: 'admit', reason: 'voluntary' }), health({ do: 'stress', delta: -12 }))] },
       { label: 'Contact a crisis line', outcomes: [any('The person who answers is calm, and in no hurry. It helps more than you expected.', 'good', health({ do: 'stress', delta: -6 }))] },
     ],

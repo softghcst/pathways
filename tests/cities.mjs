@@ -46,7 +46,7 @@ let n = 0;
 for (const c of COUNTRY_LIST) for (const k of towns.citiesOf(c.id)) { n += 1; check(k.housing > 0 && k.pay > 0 && k.housingWord && k.payWord && towns.cityLine(c.id, k.name).length > 5, `${c.id}/${k.name}: no profile`); }
 check(towns.cityOf('sg', 'Singapore').housing === 1, 'a one-city place is its own average');
 check(towns.cityOf('ke', COUNTRIES.ke.place.capital).kind === 'capital' && towns.cityOf('ke', COUNTRIES.ke.place.capital).estimated, 'elsewhere the capital gets the generic capital profile, and says it is an estimate');
-check(profile('ca').cityLines.length === COUNTRIES.ca.cities.length && profile('ca').cityLines.every(([, l]) => /^(the capital · )?homes .* · pay .*$/.test(l)), 'the world explorer lists every city, briefly: homes and pay');
+check(profile('ca').cityLines.length === COUNTRIES.ca.cities.length && profile('ca').cityLines.every(([, l]) => /^(Capital · )?[A-Za-z ]+ Homes · [A-Za-z ]+ Pay$/.test(l)), 'the world explorer lists every city, briefly: homes and pay');
 section(`profiles: all ${n} cities have one`);
 
 // 3. Homes and pay follow the city.
@@ -106,7 +106,7 @@ section('moving: cost, record, job, home, and the city chosen when emigrating');
   const cap = towns.cityOf('fr', 'Paris'); const small = towns.cityOf('fr', 'Nantes');
   check(cap.health > small.health && cap.safety < small.safety && cap.schools >= small.schools, 'the capital has the big hospitals and more crime; a smaller city is safer');
   check(/major hospitals/.test(cap.servicesLine) && /safer/.test(small.servicesLine), 'and each city\'s profile says so');
-  check(towns.cityLine('fr', 'Paris') === 'the capital · homes ' + cap.housingWord + ' · pay ' + cap.payWord, `the city line itself stays short (${towns.cityLine('fr', 'Paris')})`);
+  check(towns.cityLine('fr', 'Paris') === 'Capital · ' + cap.housingWord + ' · ' + cap.payWord, `the city line itself stays short (${towns.cityLine('fr', 'Paris')})`);
   check(towns.cityOf('sg', 'Singapore').health === 0 && towns.cityOf('sg', 'Singapore').safety === 0, 'a one-city place is its own average');
   let p = life('fr', 'Paris'); p.finance.cash = 0; const there = careQuality();
   p.city = 'Nantes'; const here = careQuality();
