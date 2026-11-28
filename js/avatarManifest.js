@@ -27,9 +27,9 @@ export const AVATAR_MANIFEST = {
     {"id": "eyes_7", "file": "avatars/eyes/eyes_7.svg", "label": "Eyes 7", "shape": {"y": 272, "bottom": 311.9, "inner": [32.4, 26.3, 23.0, 20.9, 55.9, 58.6, null, 68.1, 66.3, 32.8, 28.0, 24.2, 21.6, 19.5, 17.4, 15.7, 14.3, 13.1, 12.1, 11.6]}},
     {"id": "eyes_8", "file": "avatars/eyes/eyes_8.svg", "label": "Eyes 8", "shape": {"y": 268, "bottom": 315.5, "inner": [null, 35.5, 31.3, 27.9, 25.5, 23.5, 21.8, 36.1, 31.1, 27.7, 24.9, 22.8, 20.8, 19.1, 17.6, 16.4, 15.6, 14.5, 13.6, 12.9, 12.3, 11.9, 12.5, 28.1]}},
     {"id": "eyes_9", "file": "avatars/eyes/eyes_9.svg", "label": "Eyes 9", "shape": {"y": 268, "bottom": 317.7, "inner": [38.0, 26.7, 22.2, 19.0, 16.7, 15.0, 67.8, null, null, 11.7, 11.5, 12.8, 12.7, 12.9, 13.3, 13.9, 14.7, 15.7, 16.7, 18.0, 19.7, 21.7, 24.2, 27.2, 32.4]}},
-    {"id": "eyes_kid_girl_01_round", "file": "avatars/eyes/eyes_kid_girl_01_round.svg", "label": "Kid round", "shape": {"y": 293, "bottom": 331.0, "inner": [null, 41.6, 36.9, 33.0, 30.3, 28.0, 26.1, 24.3, 22.9, 21.7, 20.6, 19.7, 18.9, 18.3, 17.8, 17.7, 20.1, 25.0, 32.2]}},
-    {"id": "eyes_kid_girl_02_long_almond", "file": "avatars/eyes/eyes_kid_girl_02_long_almond.svg", "label": "Kid almond", "shape": {"y": 292, "bottom": 326.5, "inner": [47.0, 35.7, 30.7, 26.4, 24.0, 21.6, 19.9, 26.0, 23.3, 20.9, 18.9, 16.8, 15.0, 14.7, 18.3, 24.0, 30.6, null]}},
-    {"id": "eyes_kid_girl_03_monolid", "file": "avatars/eyes/eyes_kid_girl_03_monolid.svg", "label": "Kid monolid", "shape": {"y": 320, "bottom": 350.2, "inner": [null, 36.4, 31.4, 28.0, 25.5, 23.2, 21.5, 20.1, 18.9, 17.8, 17.4, 19.0, 22.7, 26.8, 33.0, null]}},
+    {"id": "eyes_kid_girl_01_round", "file": "avatars/eyes/eyes_kid_girl_01_round.svg", "label": "Kid round", "shape": {"y": 293, "bottom": 330.7, "inner": [null, 41.6, 36.6, 33.0, 30.2, 28.0, 26.1, 24.5, 23.0, 21.8, 20.7, 19.8, 19.0, 18.3, 17.9, 17.6, 20.1, 24.7, 31.7]}},
+    {"id": "eyes_kid_girl_02_long_almond", "file": "avatars/eyes/eyes_kid_girl_02_long_almond.svg", "label": "Kid almond", "shape": {"y": 292, "bottom": 326.5, "inner": [51.2, 38.6, 32.3, 27.8, 24.2, 21.6, 19.6, 26.4, 23.4, 20.9, 18.8, 16.8, 15.2, 14.7, 18.3, 23.9, 30.7, 47.3]}},
+    {"id": "eyes_kid_girl_03_monolid", "file": "avatars/eyes/eyes_kid_girl_03_monolid.svg", "label": "Kid monolid", "shape": {"y": 320, "bottom": 350.2, "inner": [null, 35.9, 31.0, 27.9, 25.3, 23.1, 21.3, 19.8, 18.6, 17.8, 17.5, 19.0, 21.8, 25.8, 32.1, null]}},
   ],
   eyebrows: [
     {"id": "brows_04", "file": "avatars/eyebrows/brows_04.svg", "label": "Brows 4"},
