@@ -29,7 +29,7 @@ export const AVATAR_MANIFEST = {
     {"id": "eyes_9", "file": "avatars/eyes/eyes_9.svg", "label": "Eyes 9", "shape": {"y": 268, "bottom": 317.7, "inner": [38.0, 26.7, 22.2, 19.0, 16.7, 15.0, 67.8, null, null, 11.7, 11.5, 12.8, 12.7, 12.9, 13.3, 13.9, 14.7, 15.7, 16.7, 18.0, 19.7, 21.7, 24.2, 27.2, 32.4]}},
     {"id": "eyes_kid_girl_01_round", "file": "avatars/eyes/eyes_kid_girl_01_round.svg", "label": "Kid round", "shape": {"y": 293, "bottom": 330.7, "inner": [null, 41.6, 36.6, 33.0, 30.2, 28.0, 26.1, 24.5, 23.0, 21.8, 20.7, 19.8, 19.0, 18.3, 17.9, 17.6, 20.1, 24.7, 31.7]}},
     {"id": "eyes_kid_girl_02_long_almond", "file": "avatars/eyes/eyes_kid_girl_02_long_almond.svg", "label": "Kid almond", "shape": {"y": 292, "bottom": 326.5, "inner": [51.2, 38.6, 32.3, 27.8, 24.2, 21.6, 19.6, 26.4, 23.4, 20.9, 18.8, 16.8, 15.2, 14.7, 18.3, 23.9, 30.7, 47.3]}},
-    {"id": "eyes_kid_girl_03_monolid", "file": "avatars/eyes/eyes_kid_girl_03_monolid.svg", "label": "Kid monolid", "shape": {"y": 320, "bottom": 350.2, "inner": [null, 35.9, 31.0, 27.9, 25.3, 23.1, 21.3, 19.8, 18.6, 17.8, 17.5, 19.0, 21.8, 25.8, 32.1, null]}},
+    {"id": "eyes_kid_girl_03_monolid", "file": "avatars/eyes/eyes_kid_girl_03_monolid.svg", "label": "Kid monolid", "shape": {"y": 297, "bottom": 326.9, "inner": [50.6, 34.9, 30.5, 27.5, 25.0, 22.9, 21.1, 19.6, 18.5, 17.7, 17.4, 19.3, 22.3, 26.6, 33.4]}},
   ],
   eyebrows: [
     {"id": "brows_04", "file": "avatars/eyebrows/brows_04.svg", "label": "Brows 4"},
