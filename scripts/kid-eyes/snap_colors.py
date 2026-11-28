@@ -18,6 +18,8 @@ for y in range(H):
     for x in range(W):
         p = px[x, y]
         if p[3] < 30: continue
-        c = min(PAL, key=lambda q: sum((q[i] - p[i]) ** 2 for i in range(3)))
+        # Grey edges of black lines (little color) become ink or white, never brown or catchlight.
+        pal = PAL if p[0] - p[2] >= 30 else [INK, WHITE]
+        c = min(pal, key=lambda q: sum((q[i] - p[i]) ** 2 for i in range(3)))
         px[x, y] = (*c, 255 if p[3] > 127 else p[3])
 im.save(sys.argv[2])
